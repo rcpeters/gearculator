@@ -9,9 +9,11 @@
         <link rel="stylesheet" href="js/jquery.mobile-1.2.0.min.css" />
 		<script src="js/jquery-1.8.2.min.js"></script>
 		<script src="js/jquery.mobile-1.2.0.min.js"></script>
-		<script>
-			if (window.cordova) {
+		<script type="text/javascript" src="cordova-2.0.0.js"></script>
+		<script type="text/javascript">
+        	if (window.cordova) {
 				alert("cordova");
+				app.initialize();
 			} else {
 				alert("not cordova");
 			}

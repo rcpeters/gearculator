@@ -14,11 +14,11 @@
         
 			var DrawUtil = function() {};
 
-			DrawUtil.prototype.drawWheel = function (canvasEl) {
+			DrawUtil.prototype.drawWheel = function (canvasEl, size, pxPerMM) {
 				var context = canvasEl.getContext("2d");
 				var centerX = canvasEl.width / 2;
 				var centerY = canvasEl.height / 2;
-				var radius = canvasEl.height / 2;
+				var radius = size * pxPerMM / 2;
 
 				context.clearRect(0, 0, canvasEl.width, canvasEl.height);
 				context.beginPath();
@@ -46,14 +46,14 @@
 			
 			var drawUtil = new DrawUtil();
 			
-			function init() {
+			function render() {
 				
 				var $cContainer = $("#canvas-container");
 				var drawW = $cContainer.width();
 			
 				var windowW = $(window).width();
 				var maxWheelWidthMM = 914.4; // 36 inches
-				var maxWheelWidthPx = Math.floor(drawW / 2.5);
+				var maxWheelWidthPx = Math.floor(drawW / 2);
 				var pxPerMM = maxWheelWidthPx / maxWheelWidthMM;
 				var pedalW = Math.floor(drawW * .20);
 				var paddingLeft = Math.floor(drawW * .06)
@@ -61,39 +61,52 @@
 				
 				var bWCanvas = document.getElementById("back-wheel");
 				var pCanvas = document.getElementById("pedals");
-				var fWCanvas = document.getElementById("front-wheel");
 				
 				$cContainer.height(maxWheelWidthPx);
 				
 
 				bWCanvas.width = maxWheelWidthPx;
 				bWCanvas.height = maxWheelWidthPx;
+				bWCanvas.style.left =  $cContainer.offset().left + maxWheelWidthPx / 3 + 'px';
+				
 				
 				pCanvas.width = maxWheelWidthPx;
 				pCanvas.height = maxWheelWidthPx;
-				pCanvas.style.left =  $cContainer.offset().left + ( maxWheelWidthPx * 0.6) + 'px';
+				pCanvas.style.left =  $cContainer.offset().left + maxWheelWidthPx + 'px';
 				pCanvas.style.top =  $cContainer.offset().top +  ( maxWheelWidthPx * 0.05) + 'px';
 
 				//pCanvas.style.top = 0 + 'px';
 				
-				fWCanvas.width = maxWheelWidthPx;
-				fWCanvas.height = maxWheelWidthPx;
-				fWCanvas.style.left =  $cContainer.offset().left + drawW - maxWheelWidthPx + 'px';
-				
-				drawUtil.drawWheel(bWCanvas);
-				drawUtil.drawWheel(fWCanvas);
-				drawUtil.drawChainRing(pCanvas, 34, pxPerMM);
-				drawUtil.drawChainRing(bWCanvas, 34, pxPerMM, false);
+							
+				drawUtil.drawWheel(bWCanvas, $('#wheel-size').val(), pxPerMM);
+				drawUtil.drawChainRing(pCanvas, $('#f-cog').val(), pxPerMM);
+				drawUtil.drawChainRing(bWCanvas, $('#b-cog').val(), pxPerMM, false);
 			}
 			
 			//JQ on ready
 			$(function () {
 				if (window.cordova) {
-					document.addEventListener("deviceready", init, false);
+					document.addEventListener("deviceready", render, false);
 				} else {
-					init();
+					render();
 				}
 			});
+			
+			$(document).live('pageinit', function(event, ui) {
+				$('#f-cog').live('change', function(event, ui){
+					render();
+				});
+				$('#b-cog').live('change', function(event, ui){
+					render();
+				});
+				$('#candence').live('change', function(event, ui){
+					render();
+				});
+				$('#wheel-size').live('change', function(event, ui){
+					render();
+				});
+			});
+			
 		</script>
 	</head>
     <body>
@@ -103,14 +116,29 @@
 				<a href="#about" data-role="botton">About</a>
 			</div>
 			<div data-role="content">	
-				<p>Hello world</p>		
 				<div id="canvas-container" style="border: solid 1px #FF0000;" >
 					<canvas width="100" height="100" id="back-wheel" style="position: absolute;" ></canvas>
 					<canvas width="100" height="100" id="pedals" style="position: absolute;"></canvas>
-					<canvas width="100" height="100" id="front-wheel" style="position: absolute;" ></canvas>
 				</div>
 				<div style="clear: both;"></div>
-				test
+				<div data-role="fieldcontain">
+				<label for="wb-cog">Back Cog (Teeth)</label><br />
+				<input type="range" name="b-cog" id="b-cog" value="16" min="8" max="62" />
+				</div>
+				<div data-role="fieldcontain">
+				<label for="f-cog">Front Cog (Teeth)</label><br />
+				<input type="range" name="f-cog" id="f-cog" value="46" min="8" max="62" />
+				</div>
+				<div data-role="fieldcontain">
+				<label for="f-cog">Wheel Size (Millimeter)</label><br />
+				<input type="range" name="wheel-size" id="wheel-size" value="679" min="406" max="914" />
+				</div>
+				<div data-role="fieldcontain">
+				<label for="f-cog">Cadence</label><br />
+				<input type="range" name="cadence" id="cadence" value="90" min="10" max="140" />
+				</div>
+				
+				
 			</div>
 		</div>
 		<div id="about" data-role="page">

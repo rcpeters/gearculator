@@ -47,32 +47,38 @@
 			var drawUtil = new DrawUtil();
 			
 			function init() {
+				
+				var $cContainer = $("#canvas-container");
+				var drawW = $cContainer.width();
+			
 				var windowW = $(window).width();
 				var maxWheelWidthMM = 914.4; // 36 inches
-				var maxWheelWidthPx = Math.floor(windowW * .33);
+				var maxWheelWidthPx = Math.floor(drawW / 2.5);
 				var pxPerMM = maxWheelWidthPx / maxWheelWidthMM;
-				var pedalW = Math.floor(windowW * .20);
-				var paddingLeft = Math.floor(windowW * .06)
+				var pedalW = Math.floor(drawW * .20);
+				var paddingLeft = Math.floor(drawW * .06)
 				
-				var cContainer = document.getElementById("canvas-container");
+				
 				var bWCanvas = document.getElementById("back-wheel");
 				var pCanvas = document.getElementById("pedals");
 				var fWCanvas = document.getElementById("front-wheel");
 				
-				cContainer.width = windowW + 'px';
-				cContainer.height = maxWheelWidthPx + 'px';
+				$cContainer.height(maxWheelWidthPx);
+				
 
 				bWCanvas.width = maxWheelWidthPx;
 				bWCanvas.height = maxWheelWidthPx;
 				
 				pCanvas.width = maxWheelWidthPx;
 				pCanvas.height = maxWheelWidthPx;
-				pCanvas.style.left = maxWheelWidthPx / 2 + ( maxWheelWidthPx * 0.1) + 'px';
-				pCanvas.style.top = maxWheelWidthPx * 0.3 + 'px';
+				pCanvas.style.left =  $cContainer.offset().left + ( maxWheelWidthPx * 0.6) + 'px';
+				pCanvas.style.top =  $cContainer.offset().top +  ( maxWheelWidthPx * 0.05) + 'px';
+
+				//pCanvas.style.top = 0 + 'px';
 				
 				fWCanvas.width = maxWheelWidthPx;
 				fWCanvas.height = maxWheelWidthPx;
-				fWCanvas.style.left = maxWheelWidthPx + pedalW +'px';
+				fWCanvas.style.left =  $cContainer.offset().left + drawW - maxWheelWidthPx + 'px';
 				
 				drawUtil.drawWheel(bWCanvas);
 				drawUtil.drawWheel(fWCanvas);
@@ -98,10 +104,10 @@
 			</div>
 			<div data-role="content">	
 				<p>Hello world</p>		
-				<div id="canvas-container" >
-					<canvas width="100" height="100" id="back-wheel" style="position:absolute;"></canvas>
-					<canvas width="100" height="100" id="pedals" style="position:absolute;"></canvas>
-					<canvas width="100" height="100" id="front-wheel" style="position:absolute;"></canvas>
+				<div id="canvas-container" style="border: solid 1px #FF0000;" >
+					<canvas width="100" height="100" id="back-wheel" style="position: absolute;" ></canvas>
+					<canvas width="100" height="100" id="pedals" style="position: absolute;"></canvas>
+					<canvas width="100" height="100" id="front-wheel" style="position: absolute;" ></canvas>
 				</div>
 				<div style="clear: both;"></div>
 				test

@@ -3,7 +3,7 @@
         xmlns:gap = "http://phonegap.com/ns/1.0"
         id        = "com.phonegap.gear.ratios"
         version   = "2.0.0">
-    <name>Gear ratios for fancy boys.</name>
+    <name>Gearculator</name>
 
     <description>
         App that calculates gear ratios. Mostly punks on single speeds would be most interested......

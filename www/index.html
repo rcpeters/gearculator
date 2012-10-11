@@ -20,6 +20,7 @@
 				var centerY = canvasEl.height / 2;
 				var radius = canvasEl.height / 2;
 
+				context.clearRect(0, 0, canvasEl.width, canvasEl.height);
 				context.beginPath();
 				context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
 				context.fillStyle = "#8ED6FF";
@@ -27,21 +28,56 @@
 				context.lineWidth = 1;
 			};
 			
+			DrawUtil.prototype.drawChainRing = function (canvasEl, numT, pxPerMM, clearCanvas) {
+				var context = canvasEl.getContext("2d");
+				var centerX = canvasEl.width / 2;
+				var centerY = canvasEl.height / 2;
+				var radiusMM = 12.5 / ( 2 * Math.sin( Math.PI / numT ) );
+				var radiusPx = radiusMM * pxPerMM;
+				console.log("numT: " + numT + "radiusMM: " + radiusMM + " radiusPx: " +radiusPx);
+				
+				//if (!clearCanvas) context.clearRect(0, 0, canvasEl.width, canvasEl.height);
+				context.beginPath();
+				context.arc(centerX, centerY, radiusPx, 0, 2 * Math.PI, false);
+				context.fillStyle = "#0000FF";
+				context.fill();
+				context.lineWidth = 1;
+			};
+			
 			var drawUtil = new DrawUtil();
 			
 			function init() {
-				var maxWheelWidth = Math.floor($(window).width() / 3);
-				var bWCanvas =	document.getElementById("back-wheel");
-				var fWCanvas =	document.getElementById("front-wheel");
+				var windowW = $(window).width();
+				var maxWheelWidthMM = 914.4; // 36 inches
+				var maxWheelWidthPx = Math.floor(windowW * .33);
+				var pxPerMM = maxWheelWidthPx / maxWheelWidthMM;
+				var pedalW = Math.floor(windowW * .20);
+				var paddingLeft = Math.floor(windowW * .06)
+				
+				var cContainer = document.getElementById("canvas-container");
+				var bWCanvas = document.getElementById("back-wheel");
+				var pCanvas = document.getElementById("pedals");
+				var fWCanvas = document.getElementById("front-wheel");
+				
+				cContainer.width = windowW + 'px';
+				cContainer.height = maxWheelWidthPx + 'px';
 
-				bWCanvas.width = Math.floor(maxWheelWidth);
-				bWCanvas.height = Math.floor(maxWheelWidth);
-
-				fWCanvas.width = Math.floor(maxWheelWidth);
-				fWCanvas.height = Math.floor(maxWheelWidth);
+				bWCanvas.width = maxWheelWidthPx;
+				bWCanvas.height = maxWheelWidthPx;
+				
+				pCanvas.width = maxWheelWidthPx;
+				pCanvas.height = maxWheelWidthPx;
+				pCanvas.style.left = maxWheelWidthPx / 2 + ( maxWheelWidthPx * 0.1) + 'px';
+				pCanvas.style.top = maxWheelWidthPx * 0.3 + 'px';
+				
+				fWCanvas.width = maxWheelWidthPx;
+				fWCanvas.height = maxWheelWidthPx;
+				fWCanvas.style.left = maxWheelWidthPx + pedalW +'px';
 				
 				drawUtil.drawWheel(bWCanvas);
-				drawUtil.drawWheel(fWCanvas)
+				drawUtil.drawWheel(fWCanvas);
+				drawUtil.drawChainRing(pCanvas, 34, pxPerMM);
+				drawUtil.drawChainRing(bWCanvas, 34, pxPerMM, false);
 			}
 			
 			//JQ on ready
@@ -62,9 +98,13 @@
 			</div>
 			<div data-role="content">	
 				<p>Hello world</p>		
-				<canvas width="100" height="100" id="back-wheel"></canvas>a
-				<canvas width="100" height="100" id="peddles" ></canvas>b
-				<canvas width="100" height="100" id="front-wheel"></canvas>c
+				<div id="canvas-container" >
+					<canvas width="100" height="100" id="back-wheel" style="position:absolute;"></canvas>
+					<canvas width="100" height="100" id="pedals" style="position:absolute;"></canvas>
+					<canvas width="100" height="100" id="front-wheel" style="position:absolute;"></canvas>
+				</div>
+				<div style="clear: both;"></div>
+				test
 			</div>
 		</div>
 		<div id="about" data-role="page">

@@ -11,10 +11,7 @@
 		<script src="js/jquery.mobile-1.2.0.min.js"></script>
 		<script type="text/javascript" src="cordova-2.0.0.js"></script>
 		<script type="text/javascript">
-        	if (window.cordova) {
-				app.initialize();
-			} 
-			
+        
 			var DrawUtil = function() {};
 
 			DrawUtil.prototype.drawWheel = function (canvasEl) {
@@ -23,7 +20,6 @@
 				var centerY = canvasEl.height / 2;
 				var radius = canvasEl.height / 2;
 
-				
 				context.beginPath();
 				context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
 				context.fillStyle = "#8ED6FF";
@@ -33,23 +29,29 @@
 			
 			var drawUtil = new DrawUtil();
 			
-			
+			function init() {
+				var maxWheelWidth = Math.floor($(window).width() / 3);
+				var bWCanvas =	document.getElementById("back-wheel");
+				var fWCanvas =	document.getElementById("front-wheel");
+
+				bWCanvas.width = Math.floor(maxWheelWidth);
+				bWCanvas.height = Math.floor(maxWheelWidth);
+
+				fWCanvas.width = Math.floor(maxWheelWidth);
+				fWCanvas.height = Math.floor(maxWheelWidth);
+				
+				drawUtil.drawWheel(bWCanvas);
+				drawUtil.drawWheel(fWCanvas)
+			}
 			
 			//JQ on ready
 			$(function () {
-			
-				var canvas =	document.getElementById("back-wheel");
-				canvas.width = Math.floor($(window).width() / 3);
-				canvas.height = Math.floor($(window).width() / 3);
-				
-				drawUtil.drawWheel(canvas);
-				
-				var canvas2 =	document.getElementById("front-wheel");
-				canvas2.width = Math.floor($(window).width() / 3);
-				canvas2.height = Math.floor($(window).width() / 3);
-	
-				drawUtil.drawWheel(canvas2)
-				
+				if (window.cordova) {
+					app.initialize();
+					document.addEventListener("deviceready", init, false);
+				} else {
+					init();
+				}
 			});
 		</script>
 	</head>

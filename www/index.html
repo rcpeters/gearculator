@@ -45,7 +45,11 @@
 			};
 			
 			function updateStats(inputs) {
-				$("#ratio").html((inputs.fCog / inputs.bCog).toFixed(2));
+				var ratio = inputs.fCog / inputs.bCog;
+				var kph = ratio * inputs.wheelSize * Math.PI * inputs.cadence * 60 / 1000000;
+				var mph = kph * 0.621371;
+				$("#ratio").html(ratio.toFixed(2));
+				$("#speed").html(kph.toFixed(2) + "KPH " + mph.toFixed(2) + "MPH" );
 			}
 			
 			var drawUtil = new DrawUtil();
@@ -108,7 +112,7 @@
 				$('#b-cog').live('change', function(event, ui){
 					render();
 				});
-				$('#candence').live('change', function(event, ui){
+				$('#cadence').live('change', function(event, ui){
 					render();
 				});
 				$('#wheel-size').live('change', function(event, ui){
@@ -127,6 +131,7 @@
 			<div data-role="content">	
 				<div id="canvas-container" style="border: solid 1px #FF0000;" >
 					<strong>Ratio:</strong> <div id="ratio" style="display: inline;"></div><br />
+					<strong>Speed:</strong> <div id="speed" style="display: inline;"></div><br />
 					<strong>Speed:</strong><br />
 					<strong>Speed:</strong><br />
 					<strong>Speed:</strong><br />

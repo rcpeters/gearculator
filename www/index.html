@@ -7,7 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 		<link rel="stylesheet" type="text/css" href="css/index.css" />
         <link rel="stylesheet" href="css/jquery.mobile-1.2.0.min.css" />
-		<link rel="stylesheet" href="css/themes/purple.min.css" />
+		
         <script src="js/jquery-1.8.2.min.js"></script>
 		<script src="js/jquery.mobile-1.2.0.min.js"></script>
 		<script type="text/javascript" src="cordova-2.0.0.js"></script>
@@ -49,7 +49,7 @@
 				var radiusMM = 12.5 / ( 2 * Math.sin( Math.PI / numT ) );
 				var radiusPx = radiusMM * pxPerMM;
 				var sizePx = radiusPx * 2;
-				var teethWidth = (5 * pxPerMM);
+				var teethWidth = (7 * pxPerMM);
 				var teethRaiusPx = radiusPx + teethWidth;
 				console.log("numT: " + numT + "radiusMM: " + radiusMM + " radiusPx: " +radiusPx);
 				
@@ -175,7 +175,7 @@
 				<div style="clear: both;"></div>
 				<div data-role="fieldcontain">
 				<label for="b-cog">Back Cog (Teeth)</label>
-				<input type="range" name="b-cog" id="b-cog" value="16" min="8" max="62" />
+				<input type="number" name="b-cog" id="b-cog" value="16" min="8" max="62" />
 				</div>
 				<div data-role="fieldcontain">
 				<label for="f-cog">Front Cog (Teeth)</label>

@@ -11,7 +11,18 @@
 		<script src="js/jquery.mobile-1.2.0.min.js"></script>
 		<script type="text/javascript" src="cordova-2.0.0.js"></script>
 		<script type="text/javascript">
-        
+			/*
+			 * Returns the  greatest common divisor (GCD) of the given integers. Each input must be non-negative.
+			 */
+			function gcd(x, y) {
+				while (y != 0) {
+					var z = x % y;
+					x = y;
+					y = z;
+				}
+				return x;
+			}
+		       
 			var DrawUtil = function() {};
 
 			DrawUtil.prototype.drawWheel = function (canvasEl, size, pxPerMM) {
@@ -30,28 +41,50 @@
 			
 			DrawUtil.prototype.drawChainRing = function (canvasEl, numT, pxPerMM, clearCanvas) {
 			    // http://www.scienceprimer.com/drawing-regular-polygons-javascript-canvas
+				// http://html5example.net/entry/html5-canvas/html5-canvas-gears
 				var context = canvasEl.getContext("2d");
 				var centerX = canvasEl.width / 2;
 				var centerY = canvasEl.height / 2;
 				var radiusMM = 12.5 / ( 2 * Math.sin( Math.PI / numT ) );
 				var radiusPx = radiusMM * pxPerMM;
+				var sizePx = radiusPx * 2;
+				var teethWidth = (5 * pxPerMM);
+				var teethRaiusPx = radiusPx + teethWidth;
 				console.log("numT: " + numT + "radiusMM: " + radiusMM + " radiusPx: " +radiusPx);
 				
 				
 				//if (!clearCanvas) context.clearRect(0, 0, canvasEl.width, canvasEl.height);
 				context.beginPath();
+				//context.moveTo (centerY +  sizePx * Math.cos(0), centerY +  sizePx *  Math.sin(0));
 				context.arc(centerX, centerY, radiusPx, 0, 2 * Math.PI, false);
 				context.fillStyle = "#0000FF";
 				context.fill();
-				context.lineWidth = 1;
+				context.lineWidth = teethWidth;
+				
+				for (i = 0; i < numT; i++) {
+					context.moveTo (centerY +  radiusPx * Math.cos(i * 2 * Math.PI / numT), centerY +  radiusPx *  Math.sin(i * 2 * Math.PI / numT));
+					context.lineTo (centerX + teethRaiusPx * Math.cos(i * 2 * Math.PI / numT), centerY + teethRaiusPx * Math.sin(i * 2 * Math.PI / numT));
+				}
+				
+				context.strokeStyle = "#000000";
+				context.stroke();
+				
+		
+				
 			};
 			
 			function updateStats(inputs) {
 				var ratio = inputs.fCog / inputs.bCog;
+				var ratioGCD = gcd(inputs.fCog, inputs.bCog);
+				var skidPatches = inputs.bCog / ratioGCD;
+				var ambidextrousSkidPatches = skidPatches;
+				if ( inputs.fCog % 2 == 0) ambidextrousSkidPatches =  skidPatches * 2;
 				var kph = ratio * inputs.wheelSize * Math.PI * inputs.cadence * 60 / 1000000;
 				var mph = kph * 0.621371;
 				$("#ratio").html(ratio.toFixed(2));
 				$("#speed").html(kph.toFixed(2) + "KPH " + mph.toFixed(2) + "MPH" );
+				$("#skid-patches").html(skidPatches);
+				$("#ambidextrous-skid-patches").html(ambidextrousSkidPatches);
 			}
 			
 			var drawUtil = new DrawUtil();
@@ -133,6 +166,8 @@
 				<div id="canvas-container" style="border: solid 1px #FF0000;" >
 					<strong>Ratio:</strong> <div id="ratio" style="display: inline;"></div><br />
 					<strong>Speed:</strong> <div id="speed" style="display: inline;"></div><br />
+					<strong>Skid Patches:</strong> <div id="skid-patches" style="display: inline;"></div><br />
+					<strong>Ambidextrous Skid Patches:</strong> <div id="ambidextrous-skid-patches" style="display: inline;"></div><br />
 					<canvas width="100" height="100" id="back-wheel" style="position: absolute;" ></canvas>
 					<canvas width="100" height="100" id="pedals" style="position: absolute;"></canvas>
 				</div>

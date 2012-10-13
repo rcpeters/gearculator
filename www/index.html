@@ -164,33 +164,36 @@
 	</head>
     <body>
 		<div id="index" data-role="page"  data-theme="a">
+			<div data-role="header"> 
+				<h1>Gearculator</h1>
+				<a href="#about" data-role="button" data-transition="slide">About</a>							
+			</div> 
 			<div data-role="content" style="padding-top: 0px;">	
-				<div style="font-weight: bold; color: #7DFA20; font-size: 200%; text-align: center; width: 100%; padding-top: .25em;">Gearculator</h1></div>
 				<div id="canvas-container">
 					<div style="width: 35%; height: 100%; float: right; display: table;">
-						<table style="display: table-cell; vertical-align: middle; font-weight: bold; color: #7DFA20; font-size: 200%;">
+						<table style="display: table-cell; vertical-align: middle; font-weight: bold; font-size: 200%;">
 							<tr>
-								<td style="color: #F324EB">RATIO</td>
+								<td>RATIO</td>
 								<td>&nbsp;</td>
 								<td id="ratio"></td>
 							</tr>
 							<tr>
-								<td style="color: #F324EB">MPH</td>
+								<td>MPH</td>
 								<td>&nbsp;</td>
 								<td id="mph"></td>
 							</tr>
 							<tr>
-								<td style="color: #F324EB">KPH</td>
+								<td>KPH</td>
 								<td>&nbsp;</td>
 								<td id="kph"></td>
 							</tr>
 							<tr style="font-weight: bold; font-size: 50%;">
-								<td style="color: #F324EB">Skid Patches</td>
+								<td>Skid Patches</td>
 								<td>&nbsp;</td>
 								<td id="skid-patches"><td>
 							</tr>
 							<tr style="font-weight: bold; font-size: 50%;">
-								<td style="color: #F324EB">Ambidextrous<br /> Skid Patches</td>
+								<td>Ambidextrous<br /> Skid Patches</td>
 								<td>&nbsp;</td>
 								<td id="ambidextrous-skid-patches"><td>
 							</tr>
@@ -216,7 +219,6 @@
 				<label for="cadence">Cadence</label>
 				<input type="range" name="cadence" id="cadence" value="90" min="10" max="140" />
 				</div>
-				<a href="#about" data-role="button" data-transition="slide">About</a>
 				
 			</div>
 		</div>

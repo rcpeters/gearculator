@@ -35,7 +35,7 @@
 				context.clearRect(0, 0, canvasEl.width, canvasEl.height);
 				context.beginPath();
 				context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
-				context.fillStyle = "#7DFA20";
+				context.fillStyle = "#F324EB";
 				context.fill();
 				context.lineWidth = 1;
 			};
@@ -49,8 +49,9 @@
 				var radiusMM = 12.5 / ( 2 * Math.sin( Math.PI / numT ) );
 				var radiusPx = radiusMM * pxPerMM;
 				var sizePx = radiusPx * 2;
-				var teethWidth = (7 * pxPerMM);
-				var teethRaiusPx = radiusPx + teethWidth;
+				var teethWidth = (6 * pxPerMM);
+				var teethlength = (12 * pxPerMM);
+				var teethRaiusPx = radiusPx + teethlength;
 				console.log("numT: " + numT + "radiusMM: " + radiusMM + " radiusPx: " +radiusPx);
 				
 				
@@ -58,8 +59,8 @@
 				context.beginPath();
 				//context.moveTo (centerY +  sizePx * Math.cos(0), centerY +  sizePx *  Math.sin(0));
 				context.arc(centerX, centerY, radiusPx, 0, 2 * Math.PI, false);
-				context.fillStyle = "#F324EB";
-				context.fill();
+				//context.fillStyle = "#000000";
+				//context.fill();
 				context.lineWidth = teethWidth;
 				
 				for (i = 0; i < numT; i++) {
@@ -67,7 +68,7 @@
 					context.lineTo (centerX + teethRaiusPx * Math.cos(i * 2 * Math.PI / numT), centerY + teethRaiusPx * Math.sin(i * 2 * Math.PI / numT));
 				}
 				
-				context.strokeStyle = "#000000";
+				context.strokeStyle = "#7DFA20";
 				context.stroke();
 				
 		
@@ -158,7 +159,7 @@
 		</script>
 	</head>
     <body>
-		<div id="index" data-role="page">
+		<div id="index" data-role="page"  data-theme="a">
 			<div data-role="header">
 				<h1>Gearculator</h1>
 				<a href="#about" data-role="botton" data-transition="slide">About</a>
@@ -175,7 +176,7 @@
 				<div style="clear: both;"></div>
 				<div data-role="fieldcontain">
 				<label for="b-cog">Back Cog (Teeth)</label>
-				<input type="number" name="b-cog" id="b-cog" value="16" min="8" max="62" />
+				<input type="range" name="b-cog" id="b-cog" value="16" min="8" max="62" />
 				</div>
 				<div data-role="fieldcontain">
 				<label for="f-cog">Front Cog (Teeth)</label>
@@ -196,7 +197,7 @@
 		<div id="about" data-role="page">
 			<div data-role="header">
 				<h1>About Gearculator</h1>
-				<a href="#index" data-role="botton">Back</a>
+				<a href="#index" data-role="botton" data-transition="slide">Back</a>
 			</div>
 			<div data-role="content">	
 				<p>blah blah blah, donate:, blah blah blah Sheldon Brown rocks blah blah b</p>		

@@ -30,13 +30,14 @@
 				var context = canvasEl.getContext("2d");
 				var centerX = canvasEl.width / 2;
 				var centerY = canvasEl.height / 2;
-				var radius = size * pxPerMM / 2;
+				var lineWidth = 45 * pxPerMM;
+				var radius = size * pxPerMM / 2 - lineWidth; 
 
 				context.clearRect(0, 0, canvasEl.width, canvasEl.height);
 				context.beginPath();
 				context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
 				context.strokeStyle = "#F324EB";
-				context.lineWidth = 45 * pxPerMM;
+				context.lineWidth = lineWidth;
 				context.stroke();
 				
 			};
@@ -47,11 +48,11 @@
 				var context = canvasEl.getContext("2d");
 				var centerX = canvasEl.width / 2;
 				var centerY = canvasEl.height / 2;
-				var radiusMM = 12.5 / ( 2 * Math.sin( Math.PI / numT ) );
-				var radiusPx = radiusMM * pxPerMM;
-				var sizePx = radiusPx * 2;
-				var teethWidth = (6 * pxPerMM);
+				var lineWidth = (6 * pxPerMM);
 				var teethlength = (12 * pxPerMM);
+				var radiusMM = 12.5 / ( 2 * Math.sin( Math.PI / numT ) );
+				var radiusPx = radiusMM * pxPerMM - lineWidth;
+				var sizePx = radiusPx * 2;
 				var teethRaiusPx = radiusPx + teethlength;
 				console.log("numT: " + numT + "radiusMM: " + radiusMM + " radiusPx: " +radiusPx);
 				
@@ -62,7 +63,7 @@
 				context.arc(centerX, centerY, radiusPx, 0, 2 * Math.PI, false);
 				//context.fillStyle = "#000000";
 				//context.fill();
-				context.lineWidth = teethWidth;
+				context.lineWidth = lineWidth;
 				
 				for (i = 0; i < numT; i++) {
 					context.moveTo (centerY +  radiusPx * Math.cos(i * 2 * Math.PI / numT), centerY +  radiusPx *  Math.sin(i * 2 * Math.PI / numT));
@@ -120,12 +121,12 @@
 
 				bWCanvas.width = maxWheelWidthPx;
 				bWCanvas.height = maxWheelWidthPx;
-				bWCanvas.style.left =  $cContainer.offset().left + maxWheelWidthPx / 3 + 'px';
+				bWCanvas.style.left =  $cContainer.offset().left + 'px';
 				bWCanvas.style.top =  $cContainer.offset().top + 'px';
 				
 				pCanvas.width = maxWheelWidthPx;
 				pCanvas.height = maxWheelWidthPx;
-				pCanvas.style.left =  $cContainer.offset().left + maxWheelWidthPx + 'px';
+				pCanvas.style.left =  $cContainer.offset().left + maxWheelWidthPx * 9 / 16 + 'px';
 				pCanvas.style.top =  $cContainer.offset().top +  ( maxWheelWidthPx * 0.05) + 'px';
 							
 				drawUtil.drawWheel(bWCanvas, inputs.wheelSize, pxPerMM);
@@ -168,21 +169,40 @@
 				<a href="#about" data-role="botton" data-transition="slide">About</a>
 			</div>
 			<div data-role="content">	
-				<div id="canvas-container" >
+				<div id="canvas-container">
+					<div style="width: 35%; height: 100%; float: right; display: table;">
+						<table style="display: table-cell; vertical-align: middle; font-weight: bold; color: #7DFA20; font-size: 200%;">
+							<tr>
+								<td>RATIO</td>
+								<td>&nbsp;</td>
+								<td id="ratio"></td>
+							</tr>
+							<tr>
+								<td>MPH</td>
+								<td>&nbsp;</td>
+								<td id="mph"></td>
+							</tr>
+							<tr>
+								<td>KPH</td>
+								<td>&nbsp;</td>
+								<td id="kph"></td>
+							</tr>
+							<tr style="font-weight: bold; font-size: 50%;">
+								<td>Skid Patches</td>
+								<td>&nbsp;</td>
+								<td id="skid-patches"><td>
+							</tr>
+							<tr style="font-weight: bold; font-size: 50%;">
+								<td>Ambidextrous<br /> Skid Patches</td>
+								<td>&nbsp;</td>
+								<td id="ambidextrous-skid-patches"><td>
+							</tr>
+						</table>
+					</div>
 					<canvas width="100" height="100" id="back-wheel" style="position: absolute;" ></canvas>
 					<canvas width="100" height="100" id="pedals" style="position: absolute;"></canvas>
 				</div>
 				<div style="clear: both;"></div>
-				<div class="ui-grid-b">
-					<div class="ui-block-a" style="font-weight: bold; color: #7DFA20; font-size: 200%;">Ratio: <span id="ratio" style="display: inline;"></span></div>
-					<div class="ui-block-b" style="font-weight: bold; color: #7DFA20; font-size: 200%;">MPH: <span id="mph" style="display: inline;"></span></div>
-				    <div class="ui-block-c" style="font-weight: bold; color: #7DFA20; font-size: 200%;">KPH: <span id="kph" style="display: inline;"></span></div>
-				</div>
-				<div class="ui-grid-b">
-					<div class="ui-block-a" style="font-weight: bold; font-size: 150%;">Skid Patches: <span id="skid-patches" style="display: inline;"></span></div>
-					<div class="ui-block-b" style="font-weight: bold; font-size: 150%;">Ambidextrous Skid Patches: <span id="ambidextrous-skid-patches" style="display: inline;"></span></div>
-					<div class="ui-block-b"></div>
-				</div>
 				<div data-role="fieldcontain">
 				<label for="b-cog">Back Cog (Teeth)</label>
 				<input type="range" name="b-cog" id="b-cog" value="16" min="8" max="62" />

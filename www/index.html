@@ -171,38 +171,22 @@
 			<div data-role="content" style="padding-top: 0px;">	
 				<div id="canvas-container">
 					<div style="width: 35%; height: 100%; float: right; display: table;">
-						<table style="display: table-cell; vertical-align: middle; font-weight: bold; font-size: 200%;">
-							<tr>
-								<td>RATIO</td>
-								<td>&nbsp;</td>
-								<td id="ratio"></td>
-							</tr>
-							<tr>
-								<td>MPH</td>
-								<td>&nbsp;</td>
-								<td id="mph"></td>
-							</tr>
-							<tr>
-								<td>KPH</td>
-								<td>&nbsp;</td>
-								<td id="kph"></td>
-							</tr>
-							<tr style="font-weight: bold; font-size: 50%;">
-								<td>Skid Patches</td>
-								<td>&nbsp;</td>
-								<td id="skid-patches"><td>
-							</tr>
-							<tr style="font-weight: bold; font-size: 50%;">
-								<td>Ambidextrous<br /> Skid Patches</td>
-								<td>&nbsp;</td>
-								<td id="ambidextrous-skid-patches"><td>
-							</tr>
-						</table>
+						<div style="display: table-cell; vertical-align: middle; font-weight: bold; font-size: 200%;">
+						RATIO
+						<span id="ratio">&nbsp;</span><br />
+						<br />
+						MPH
+						<span id="mph">&nbsp;</span><br />
+						<br />
+						KPH	
+						<span id="kph">&nbsp;</span><br />
+						</div>
 					</div>
 					<canvas width="100" height="100" id="back-wheel" style="position: absolute;" ></canvas>
 					<canvas width="100" height="100" id="pedals" style="position: absolute;"></canvas>
 				</div>
 				<div style="clear: both;"></div>
+				Skid Patches <span id="skid-patches"></span>. Ambidextrous Skid Patches <span id="ambidextrous-skid-patches"></span>.
 				<div data-role="fieldcontain">
 				<label for="b-cog">Back Cog (Teeth)</label>
 				<input type="range" name="b-cog" id="b-cog" value="16" min="8" max="62" />

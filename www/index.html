@@ -105,7 +105,7 @@
 				
 				var windowW = $(window).width();
 				var maxWheelWidthMM = 914.4; // 36 inches
-				var maxWheelWidthPx = Math.floor(windowW * .45);
+				var maxWheelWidthPx = Math.floor(windowW / 2);
 				if ($(window).height() / 2 < maxWheelWidthPx)  maxWheelWidthPx = $(window).height() / 2;
 				
 				var numDispFontSize = maxWheelWidthPx / 9;

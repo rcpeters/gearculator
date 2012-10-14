@@ -104,11 +104,13 @@
 				inputs.cadence  = $('#cadence').val();
 				
 				var $cContainer = $("#canvas-container");
-				var drawW = $cContainer.width();
+				var drawW = $cContainer.width(); 
 			
 				var windowW = $(window).width();
 				var maxWheelWidthMM = 914.4; // 36 inches
 				var maxWheelWidthPx = Math.floor(drawW / 2);
+				if ($(window).height() / 2 < maxWheelWidthPx)  maxWheelWidthPx = $(window).height() / 2;
+				
 				var numDispFontSize = maxWheelWidthPx / 9;
 				var pxPerMM = maxWheelWidthPx / maxWheelWidthMM;
 				var pedalW = Math.floor(drawW * .20);

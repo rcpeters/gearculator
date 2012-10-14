@@ -7,7 +7,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 		<link rel="stylesheet" type="text/css" href="css/index.css" />
         <link rel="stylesheet" href="css/jquery.mobile-1.2.0.min.css" />
-		
         <script src="js/jquery-1.8.2.min.js"></script>
 		<script src="js/jquery.mobile-1.2.0.min.js"></script>
 		<script type="text/javascript" src="cordova-2.0.0.js"></script>
@@ -73,8 +72,6 @@
 				context.strokeStyle = "#7DFA20";
 				context.stroke();
 				
-		
-				
 			};
 			
 			function updateStats(inputs) {
@@ -95,7 +92,8 @@
 			
 			var drawUtil = new DrawUtil();
 			
-			var inputs = {};
+			var inputs = {};	
+			var display = {};
 			
 			function render() {
 				inputs.wheelSize = $('#wheel-size').val();
@@ -104,17 +102,14 @@
 				inputs.cadence  = $('#cadence').val();
 				
 				var $cContainer = $("#canvas-container");
-				var drawW = $cContainer.width(); 
-			
+				
 				var windowW = $(window).width();
 				var maxWheelWidthMM = 914.4; // 36 inches
-				var maxWheelWidthPx = Math.floor(drawW / 2);
+				var maxWheelWidthPx = Math.floor(windowW * .45);
 				if ($(window).height() / 2 < maxWheelWidthPx)  maxWheelWidthPx = $(window).height() / 2;
 				
 				var numDispFontSize = maxWheelWidthPx / 9;
 				var pxPerMM = maxWheelWidthPx / maxWheelWidthMM;
-				var pedalW = Math.floor(drawW * .20);
-				var paddingLeft = Math.floor(drawW * .06)
 				
 				$('#num-disp').css("font-size",numDispFontSize +'px');
 				
@@ -140,6 +135,14 @@
 				updateStats(inputs);
 			}
 			
+			function changeWheelButtonTxt() {
+				$('#wheel-size-page-button-txt').html('Tire Diam.: ' + $('#wheel-size').val() + ' mm');
+			}
+			
+			function changeCadenceButtonTxt() {
+				$('#cadence-page-button-txt').html('Cadence: ' + $('#cadence').val() + ' rpm');
+			}
+			
 			//JQ on ready
 			$(function () {
 				if (window.cordova) {
@@ -160,17 +163,28 @@
 					render();
 				});
 				$('#wheel-size').live('change', function(event, ui){
+					changeWheelButtonTxt();
 					render();
 				});
+				$('#cadence').live('change', function(event, ui){
+					changeCadenceButtonTxt();
+					render();
+				});
+				$('#index-page').live('pageshow', function(event, ui){
+					render();
+				});			
+				changeWheelButtonTxt();
+				changeCadenceButtonTxt();
 			});
+			
 			
 		</script>
 	</head>
     <body>
-		<div id="index" data-role="page" data-theme="a">
+		<div id="index-page" data-role="page" data-theme="a">
 			<div data-role="header"> 
 				<h1>Gearculator</h1>
-				<a href="#about" data-role="button" data-transition="flip">About</a>							
+				<a href="#about-page" data-role="button" data-transition="flip">About</a>							
 			</div> 
 			<div data-role="content" style="padding-top: 0px;">	
 				<div id="canvas-container">
@@ -200,21 +214,41 @@
 				<label for="f-cog">Front Cog (Teeth)</label>
 				<input type="range" name="f-cog" id="f-cog" value="46" min="20" max="52" />
 				</div>
+				<fieldset class="ui-grid-a">
+					<div class="ui-block-a"><a href="#cadence-page" id=="cadence-page-button" data-role="button" data-transition="flip"><span id='cadence-page-button-txt'></span></a></div>
+					<div class="ui-block-b"><a href="#wheel-size-page" id=="wheel-size-page-button" data-role="button" data-transition="flip"><span id='wheel-size-page-button-txt'></a></a></div>	   
+				</fieldset>				
+			</div>
+		</div>
+		<div id="wheel-size-page" data-role="page" data-theme="a">
+			<div data-role="header">
+				<h1>Wheel Size</h1>
+				<a href="#index-page" data-role="botton" data-transition="flip">Back</a>
+			</div>
+			<div data-role="content">	
 				<div data-role="fieldcontain">
 				<label for="wheel-size"">Wheel Size (Millimeter)</label>
 				<input type="range" name="wheel-size" id="wheel-size" value="679" min="406" max="914" />
-				</div>
-				<div data-role="fieldcontain">
-				<label for="cadence">Cadence</label>
-				<input type="range" name="cadence" id="cadence" value="90" min="10" max="140" />
-				</div>
-				
+				</div>		
 			</div>
 		</div>
-		<div id="about" data-role="page" data-theme="a">
+		<div id="cadence-page" data-role="page" data-theme="a">
+			<div data-role="header">
+				<h1>Cadence</h1>
+				<a href="#index-page" data-role="botton" data-transition="flip">Back</a>
+			</div>
+			<div data-role="content">	
+				<p>Cadence is how many times the pedals rotate around per a mintue.</p>
+				<div data-role="fieldcontain">
+					<label for="cadence">Cadence</label>
+					<input type="range" name="cadence" id="cadence" value="90" min="10" max="140" />
+				</div>
+			</div>
+		</div>
+		<div id="about-page" data-role="page" data-theme="a">
 			<div data-role="header">
 				<h1>About Gearculator</h1>
-				<a href="#index" data-role="botton" data-transition="flip">Back</a>
+				<a href="#index-page" data-role="botton" data-transition="flip">Back</a>
 			</div>
 			<div data-role="content">	
 				<p>blah blah blah, donate:, blah blah blah Sheldon Brown rocks blah blah b</p>		

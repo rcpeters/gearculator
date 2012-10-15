@@ -302,7 +302,7 @@
 				for (i=0; i< tireSizes.length; i++) {
 					$("#tireSizeButton" + i).button();
 					(function(size) {
-						$("#tireSizeButton" + i).bind('click', function() {
+						$("#tireSizeButton" + i).live('click', function() {
 							jqObj.wheelSize.val(size);
 							jqObj.wheelSize.slider('refresh');
 							return false;

@@ -51,7 +51,6 @@
 				for (var i = 0; i < numSkids; i++) {
 					context.beginPath();
 					var pos = i *  360 / numSkids; 
-					console.log(pos);
 					context.strokeStyle = "#76006d";
 					context.lineWidth = lineWidth;
 					context.arc(centerX, centerY, radius, pos/360 * 2 * Math.PI, (pos + 3)/ 360 * 2 * Math.PI , false);

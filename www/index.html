@@ -93,10 +93,10 @@
 			};
 			
 			function updateStats(inputs) {
-				inputs.wheelSize = $('#wheel-size').val();
-				inputs.fCog  = $('#f-cog').val();
-				inputs.bCog  = $('#b-cog').val();
-				inputs.cadence  = $('#cadence').val();
+				inputs.wheelSize = jqObj.wheelSize.val();
+				inputs.fCog  =jqObj.fCog.val();
+				inputs.bCog  = jqObj.bCog.val();
+				inputs.cadence  = jqObj.cadence.val();
 
 				var ratio = inputs.fCog / inputs.bCog;
 				var ratioGCD = gcd(inputs.fCog, inputs.bCog);
@@ -105,12 +105,13 @@
 				if ( inputs.fCog % 2 == 0) inputs.ambidextrousSkidPatches = inputs.skidPatches * 2;
 				var kph = ratio * inputs.wheelSize * Math.PI * inputs.cadence * 60 / 1000000;
 				var mph = kph * 0.621371;
-				$("#ratio").html(ratio.toFixed(2));
-				$("#kph").html(kph.toFixed(2));
-				$("#mph").html(mph.toFixed(2));
 				
-				$("#skid-patches").html(inputs.skidPatches);
-				$("#ambidextrous-skid-patches").html(inputs.ambidextrousSkidPatches);
+				jqObj.ratio.html(ratio.toFixed(2));
+				jqObj.kph.html(kph.toFixed(2));
+				jqObj.mph.html(mph.toFixed(2));
+				
+				jqObj.skidPatches.html(inputs.skidPatches);
+				jqObj.ambidextrousSkidPatches.html(inputs.ambidextrousSkidPatches);
 			}
 			
 			var drawUtil = new DrawUtil();
@@ -121,6 +122,7 @@
 			var inputs = {};	
 			var display = {};
 			var el = {};
+			var jqObj = {};
 			var context = {};
 			var timeout = {};
 			
@@ -173,6 +175,16 @@
 				el.backRing = document.getElementById("back-ring-canvas");
 				el.frontRing = document.getElementById("front-ring-canvas");
 				
+				jqObj.wheelSize = $('#wheel-size');
+				jqObj.fCog = $('#f-cog');
+				jqObj.bCog = $('#b-cog');
+				jqObj.cadence = $('#cadence');
+				jqObj.ratio = $("#ratio");
+				jqObj.kph = $("#kph");
+				jqObj.mph = $("#mph");
+				jqObj.skidPatches = $("#skid-patches");
+				jqObj.ambidextrousSkidPatches = $("#ambidextrous-skid-patches");
+				
 				context.backWheel = el.backWheel.getContext("2d");
 				context.skid = el.skid.getContext("2d");
 				context.backRing = el.backRing.getContext("2d");
@@ -202,21 +214,27 @@
 			$(document).live('pageinit', function(event, ui) {
 				$('#f-cog').live('change', function(event, ui){
 					updateStats(inputs);
-					drawUtil.drawChainRing(context.frontRing, inputs.fCog);
-					drawUtil.drawSkid(context.skid, inputs.ambidextrousSkidPatches);
+					setTimeout(function() { 
+						drawUtil.drawChainRing(context.frontRing, inputs.fCog);
+						drawUtil.drawSkid(context.skid, inputs.ambidextrousSkidPatches);
+					}, 50);
 				});
 				$('#b-cog').live('change', function(event, ui){
 					updateStats(inputs);
-					drawUtil.drawChainRing(context.backRing,inputs.bCog, false);
-					drawUtil.drawSkid(context.skid, inputs.ambidextrousSkidPatches);
+					setTimeout(function() { 
+						drawUtil.drawChainRing(context.backRing,inputs.bCog, false);
+						drawUtil.drawSkid(context.skid, inputs.ambidextrousSkidPatches);
+					}, 50);
 				});
 				$('#cadence').live('change', function(event, ui){
 					updateStats(inputs);
 				});
 				$('#wheel-size').live('change', function(event, ui){
 					updateStats(inputs);
-					drawUtil.drawWheel(context.backWheel);
-					drawUtil.drawSkid(context.skid, inputs.ambidextrousSkidPatches);
+					setTimeout(function() { 
+						drawUtil.drawWheel(context.backWheel);
+						drawUtil.drawSkid(context.skid, inputs.ambidextrousSkidPatches);
+					}, 50);
 					changeWheelButtonTxt();
 				});
 				$('#cadence').live('change', function(event, ui){

@@ -25,15 +25,13 @@
 		       
 			var DrawUtil = function() {};
 
-			DrawUtil.prototype.drawWheel = function (canvasEl) {
-			
-				var context = canvasEl.getContext("2d");
-				var centerX = canvasEl.width / 2;
-				var centerY = canvasEl.height / 2;
+			DrawUtil.prototype.drawWheel = function (context) {
+				var centerX = display.maxWheelWidthPx / 2;
+				var centerY = display.maxWheelWidthPx / 2;
 				var lineWidth = 45 * display.pxPerMM;
 				var radius = inputs.wheelSize * display.pxPerMM / 2 - lineWidth; 
 
-				context.clearRect(0, 0, canvasEl.width, canvasEl.height);
+				context.clearRect(0, 0, display.maxWheelWidthPx, display.maxWheelWidthPx);
 				context.beginPath();
 				context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
 				context.strokeStyle = "#F324EB";
@@ -42,12 +40,11 @@
 				
 			};
 			
-			DrawUtil.prototype.drawChainRing = function (canvasEl, numT, clearCanvas) {
+			DrawUtil.prototype.drawChainRing = function (context, numT, clearCanvas) {
 				// http://www.scienceprimer.com/drawing-regular-polygons-javascript-canvas
 				// http://html5example.net/entry/html5-canvas/html5-canvas-gears
-				var context = canvasEl.getContext("2d");
-				var centerX = canvasEl.width / 2;
-				var centerY = canvasEl.height / 2;
+				var centerX = display.maxWheelWidthPx / 2;
+				var centerY = display.maxWheelWidthPx / 2;
 				var lineWidth = (6 * display.pxPerMM);
 				var teethlength = (12 * display.pxPerMM);
 				var radiusMM = 12.5 / ( 2 * Math.sin( Math.PI / numT ) );
@@ -55,7 +52,7 @@
 				var sizePx = radiusPx * 2;
 				var teethRaiusPx = radiusPx + teethlength;
 				
-				context.clearRect(0, 0, canvasEl.width, canvasEl.height);
+				context.clearRect(0, 0, display.maxWheelWidthPx, display.maxWheelWidthPx);
 				context.beginPath();
 				//context.moveTo (centerY +  sizePx * Math.cos(0), centerY +  sizePx *  Math.sin(0));
 				context.arc(centerX, centerY, radiusPx, 0, 2 * Math.PI, false);
@@ -102,6 +99,7 @@
 			var inputs = {};	
 			var display = {};
 			var el = {};
+			var context = {};
 			var timeout = {};
 			
 			function displaySetUp() {
@@ -144,11 +142,18 @@
 				el.backWheel = document.getElementById("back-wheel-canvas");
 				el.backRing = document.getElementById("back-ring-canvas");
 				el.frontRing = document.getElementById("front-ring-canvas");
+				
+				context.backWheel = document.getElementById("back-wheel-canvas").getContext("2d");
+				context.backRing = document.getElementById("back-ring-canvas").getContext("2d");
+				context.frontRing = document.getElementById("front-ring-canvas").getContext("2d");
+	
 				displaySetUp();	
 				updateStats(inputs);
-				drawUtil.drawWheel(el.backWheel);
-				drawUtil.drawChainRing(el.backRing,inputs.bCog);
-				drawUtil.drawChainRing(el.frontRing, inputs.fCog);								
+				drawUtil.drawWheel(context.backWheel);
+				drawUtil.drawChainRing(context.backRing,inputs.bCog);
+				drawUtil.drawChainRing(context.frontRing, inputs.fCog);
+				changeWheelButtonTxt();
+				changeCadenceButtonTxt();
 			}
 			
 			//JQ on ready
@@ -163,29 +168,24 @@
 			$(document).live('pageinit', function(event, ui) {
 				$('#f-cog').live('change', function(event, ui){
 					updateStats(inputs);
-					if (timeout.frontRing) clearTimeout(timeout.frontRing);
-					timeout.frontRing = setTimeout(function () {
-						drawUtil.drawChainRing(el.frontRing, inputs.fCog);
-					},100);
+					drawUtil.drawChainRing(context.frontRing, inputs.fCog);
 				});
 				$('#b-cog').live('change', function(event, ui){
 					updateStats(inputs);
-					drawUtil.drawChainRing(el.backRing,inputs.bCog, false);				
+					drawUtil.drawChainRing(context.backRing,inputs.bCog, false);				
 				});
 				$('#cadence').live('change', function(event, ui){
 					updateStats(inputs);
 				});
 				$('#wheel-size').live('change', function(event, ui){
 					updateStats(inputs);
-					drawUtil.drawWheel(el.backWheel);
+					drawUtil.drawWheel(context.backWheel);
 					changeWheelButtonTxt();
 				});
 				$('#cadence').live('change', function(event, ui){
 					updateStats(inputs);
 					changeCadenceButtonTxt();
 				});			
-				changeWheelButtonTxt();
-				changeCadenceButtonTxt();
 			});
 			
 			
@@ -226,10 +226,8 @@
 				<label for="f-cog">Front Cog (Teeth)</label>
 				<input type="range" name="f-cog" id="f-cog" value="46" min="20" max="52" />
 				</div>
-				<fieldset class="ui-grid-a">
-					<div class="ui-block-a"><a href="#cadence-page" id=="cadence-page-button" data-role="button" data-transition="flip"><span id='cadence-page-button-txt'></span></a></div>
-					<div class="ui-block-b"><a href="#wheel-size-page" id=="wheel-size-page-button" data-role="button" data-transition="flip"><span id='wheel-size-page-button-txt'></a></a></div>	   
-				</fieldset>				
+				<a href="#cadence-page" id=="cadence-page-button" data-role="button" data-transition="flip"><span id='cadence-page-button-txt'></span></a>
+				<a href="#wheel-size-page" id=="wheel-size-page-button" data-role="button" data-transition="flip"><span id='wheel-size-page-button-txt'></span></a>				
 			</div>
 		</div>
 		<div id="wheel-size-page" data-role="page" data-theme="a">

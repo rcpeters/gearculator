@@ -163,8 +163,7 @@
 				});
 				$('#b-cog').live('change', function(event, ui){
 					updateStats(inputs);
-					drawUtil.drawWheel(document.getElementById("back-wheel-canvas"));
-					drawUtil.drawChainRing(document.getElementById("back-ring-canvas"),inputs.bCog, false);				
+					//drawUtil.drawChainRing(document.getElementById("back-ring-canvas"),inputs.bCog, false);				
 				});
 				$('#cadence').live('change', function(event, ui){
 					updateStats(inputs);

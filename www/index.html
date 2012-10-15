@@ -34,9 +34,31 @@
 				context.clearRect(0, 0, display.maxWheelWidthPx, display.maxWheelWidthPx);
 				context.beginPath();
 				context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
-				context.strokeStyle = "#F324EB";
+				context.strokeStyle = "#FA20EA";
 				context.lineWidth = lineWidth;
 				context.stroke();
+				
+			};
+			
+			DrawUtil.prototype.drawSkid = function (context, numSkids) {
+				var centerX = display.maxWheelWidthPx / 2;
+				var centerY = display.maxWheelWidthPx / 2;
+				var lineWidth = 15 * display.pxPerMM;
+				var radius = inputs.wheelSize * display.pxPerMM / 2 - (lineWidth * 2); 
+				
+				context.clearRect(0, 0, display.maxWheelWidthPx, display.maxWheelWidthPx);
+				
+				for (var i = 0; i < numSkids; i++) {
+					context.beginPath();
+					var pos = i *  360 / numSkids; 
+					console.log(pos);
+					context.strokeStyle = "#76006d";
+					context.lineWidth = lineWidth;
+					context.arc(centerX, centerY, radius, pos/360 * 2 * Math.PI, (pos + 3)/ 360 * 2 * Math.PI , false);
+					//context.closePath();
+					context.stroke();
+				}
+				
 				
 			};
 			
@@ -65,7 +87,7 @@
 					context.lineTo (centerX + teethRaiusPx * Math.cos(i * 2 * Math.PI / numT), centerY + teethRaiusPx * Math.sin(i * 2 * Math.PI / numT));
 				}
 				
-				context.strokeStyle = "#7DFA20";
+				context.strokeStyle = "#05F017";
 				context.stroke();
 				
 			};
@@ -78,17 +100,17 @@
 
 				var ratio = inputs.fCog / inputs.bCog;
 				var ratioGCD = gcd(inputs.fCog, inputs.bCog);
-				var skidPatches = inputs.bCog / ratioGCD;
-				var ambidextrousSkidPatches = skidPatches;
-				if ( inputs.fCog % 2 == 0) ambidextrousSkidPatches =  skidPatches * 2;
+				inputs.skidPatches = inputs.bCog / ratioGCD;
+				inputs.ambidextrousSkidPatches = inputs.skidPatches;
+				if ( inputs.fCog % 2 == 0) inputs.ambidextrousSkidPatches = inputs.skidPatches * 2;
 				var kph = ratio * inputs.wheelSize * Math.PI * inputs.cadence * 60 / 1000000;
 				var mph = kph * 0.621371;
 				$("#ratio").html(ratio.toFixed(2));
 				$("#kph").html(kph.toFixed(2));
 				$("#mph").html(mph.toFixed(2));
 				
-				$("#skid-patches").html(skidPatches);
-				$("#ambidextrous-skid-patches").html(ambidextrousSkidPatches);
+				$("#skid-patches").html(inputs.skidPatches);
+				$("#ambidextrous-skid-patches").html(inputs.ambidextrousSkidPatches);
 			}
 			
 			var drawUtil = new DrawUtil();
@@ -113,18 +135,25 @@
 				var $cContainer = $("#canvas-container");
 				$cContainer.height(display.maxWheelWidthPx);
 
-				var bWCanvas = el.backWheel;
-				var bRCanvas = el.backRing;
-				var pCanvas = el.frontRing;
+				el.backRing.width = display.maxWheelWidthPx;
+				el.backRing.height = display.maxWheelWidthPx;
+				el.backRing.style.left = $cContainer.offset().left + 'px';
+				el.backRing.style.top = $cContainer.offset().top + 'px';
 				
-				bRCanvas.width =  bRCanvas.height = bWCanvas.width = bWCanvas.height = display.maxWheelWidthPx;
-				bRCanvas.style.left = bWCanvas.style.left =  $cContainer.offset().left + 'px';
-				bRCanvas.style.top = bWCanvas.style.top =  $cContainer.offset().top + 'px';
+				el.backWheel.width = display.maxWheelWidthPx;
+				el.backWheel.height = display.maxWheelWidthPx;
+				el.backWheel.style.left =  $cContainer.offset().left + 'px';
+				el.backWheel.style.top =  $cContainer.offset().top + 'px';
 				
-				pCanvas.width = display.maxWheelWidthPx;
-				pCanvas.height = display.maxWheelWidthPx;
-				pCanvas.style.left =  $cContainer.offset().left + display.maxWheelWidthPx * 9 / 16 + 'px';
-				pCanvas.style.top =  $cContainer.offset().top +  ( display.maxWheelWidthPx * 0.05) + 'px';
+				el.skid.width = display.maxWheelWidthPx;
+				el.skid.height = display.maxWheelWidthPx;
+				el.skid.style.left =  $cContainer.offset().left + 'px';
+				el.skid.style.top =  $cContainer.offset().top + 'px';
+				
+				el.frontRing.width = display.maxWheelWidthPx;
+				el.frontRing.height = display.maxWheelWidthPx;
+				el.frontRing.style.left =  $cContainer.offset().left + display.maxWheelWidthPx * 9 / 16 + 'px';
+				el.frontRing.style.top =  $cContainer.offset().top +  ( display.maxWheelWidthPx * 0.05) + 'px';
 
 				$('#num-disp').css("font-size", display.numDispFontSize +'px');
 
@@ -140,18 +169,21 @@
 			
 			function initAll() {
 				el.backWheel = document.getElementById("back-wheel-canvas");
+				el.skid = document.getElementById("skid-canvas");	
 				el.backRing = document.getElementById("back-ring-canvas");
 				el.frontRing = document.getElementById("front-ring-canvas");
 				
-				context.backWheel = document.getElementById("back-wheel-canvas").getContext("2d");
-				context.backRing = document.getElementById("back-ring-canvas").getContext("2d");
-				context.frontRing = document.getElementById("front-ring-canvas").getContext("2d");
+				context.backWheel = el.backWheel.getContext("2d");
+				context.skid = el.skid.getContext("2d");
+				context.backRing = el.backRing.getContext("2d");
+				context.frontRing = el.frontRing.getContext("2d");
 	
 				displaySetUp();	
 				updateStats(inputs);
 				drawUtil.drawWheel(context.backWheel);
 				drawUtil.drawChainRing(context.backRing,inputs.bCog);
 				drawUtil.drawChainRing(context.frontRing, inputs.fCog);
+				drawUtil.drawSkid(context.skid, inputs.ambidextrousSkidPatches);
 				changeWheelButtonTxt();
 				changeCadenceButtonTxt();
 			}
@@ -169,10 +201,12 @@
 				$('#f-cog').live('change', function(event, ui){
 					updateStats(inputs);
 					drawUtil.drawChainRing(context.frontRing, inputs.fCog);
+					drawUtil.drawSkid(context.skid, inputs.ambidextrousSkidPatches);
 				});
 				$('#b-cog').live('change', function(event, ui){
 					updateStats(inputs);
-					drawUtil.drawChainRing(context.backRing,inputs.bCog, false);				
+					drawUtil.drawChainRing(context.backRing,inputs.bCog, false);
+					drawUtil.drawSkid(context.skid, inputs.ambidextrousSkidPatches);
 				});
 				$('#cadence').live('change', function(event, ui){
 					updateStats(inputs);
@@ -180,6 +214,7 @@
 				$('#wheel-size').live('change', function(event, ui){
 					updateStats(inputs);
 					drawUtil.drawWheel(context.backWheel);
+					drawUtil.drawSkid(context.skid, inputs.ambidextrousSkidPatches);
 					changeWheelButtonTxt();
 				});
 				$('#cadence').live('change', function(event, ui){
@@ -212,6 +247,7 @@
 						</div>
 					</div>
 					<canvas width="100" height="100" id="back-wheel-canvas" style="position: absolute;" ></canvas>
+					<canvas width="100" height="100" id="skid-canvas" style="position: absolute;" ></canvas>
 					<canvas width="100" height="100" id="back-ring-canvas" style="position: absolute;" ></canvas>
 					<canvas width="100" height="100" id="front-ring-canvas" style="position: absolute;"></canvas>
 				</div>

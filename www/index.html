@@ -295,14 +295,14 @@
 					+ "   <td style='vertical-align: middle; font-weight: bold;'>" + tireSizes[i][1] + "&nbsp; </td>"
 					+ "   <td style='vertical-align: middle;'>" + tireSizes[i][0].toFixed(2) + " in&nbsp; </td>"
 					+ "   <td style='vertical-align: middle;'>" + Math.round(tireSizes[i][0] * 25.4) + " mm&nbsp; </td>"
-					+ "   <td style='vertical-align: middle; '><a href='' id='tireSizeButton" + i + "' style='color: white;' data-mini='true' >Select </a></td>"
+					+ "   <td style='vertical-align: middle; '><input type='button' value='Select' id='tireSizeButton" + i + "' style='color: white;' data-mini='true' /></td>"
 					+ "</tr>"
 				}
 				$('#wheel-size-table').html(tireSizesOutput);
 				for (i=0; i< tireSizes.length; i++) {
 					$("#tireSizeButton" + i).button();
 					(function(size) {
-						$("#tireSizeButton" + i).live('click', function() {
+						$("#tireSizeButton" + i).bind('click', function() {
 							jqObj.wheelSize.val(size);
 							jqObj.wheelSize.slider('refresh');
 							return false;

@@ -54,7 +54,6 @@
 				var radiusPx = radiusMM * display.pxPerMM - lineWidth;
 				var sizePx = radiusPx * 2;
 				var teethRaiusPx = radiusPx + teethlength;
-				console.log("numT: " + numT + "radiusMM: " + radiusMM + " radiusPx: " +radiusPx);
 				
 				context.clearRect(0, 0, canvasEl.width, canvasEl.height);
 				context.beginPath();
@@ -102,6 +101,7 @@
 			
 			var inputs = {};	
 			var display = {};
+			var el = {};
 			
 			function displaySetUp() {
 				display.windowW = $(window).width();
@@ -114,9 +114,9 @@
 				var $cContainer = $("#canvas-container");
 				$cContainer.height(display.maxWheelWidthPx);
 
-				var bWCanvas = document.getElementById("back-wheel-canvas");
-				var bRCanvas = document.getElementById("back-ring-canvas");
-				var pCanvas = document.getElementById("front-ring-canvas");
+				var bWCanvas = el.backWheel;
+				var bRCanvas = el.backRing;
+				var pCanvas = el.frontRing;
 				
 				bRCanvas.width =  bRCanvas.height = bWCanvas.width = bWCanvas.height = display.maxWheelWidthPx;
 				bRCanvas.style.left = bWCanvas.style.left =  $cContainer.offset().left + 'px';
@@ -140,11 +140,14 @@
 			}
 			
 			function initAll() {
+				el.backWheel = document.getElementById("back-wheel-canvas");
+				el.backRing = document.getElementById("back-ring-canvas");
+				el.frontRing = document.getElementById("front-ring-canvas");
 				displaySetUp();	
 				updateStats(inputs);
-				drawUtil.drawWheel(document.getElementById("back-wheel-canvas"));
-				drawUtil.drawChainRing(document.getElementById("back-ring-canvas"),inputs.bCog);
-				drawUtil.drawChainRing(document.getElementById("front-ring-canvas"), inputs.fCog);								
+				drawUtil.drawWheel(el.backWheel);
+				drawUtil.drawChainRing(el.backRing,inputs.bCog);
+				drawUtil.drawChainRing(el.frontRing, inputs.fCog);								
 			}
 			
 			//JQ on ready
@@ -159,27 +162,23 @@
 			$(document).live('pageinit', function(event, ui) {
 				$('#f-cog').live('change', function(event, ui){
 					updateStats(inputs);
-					drawUtil.drawChainRing(document.getElementById("front-ring-canvas"), inputs.fCog);
+					drawUtil.drawChainRing(el.frontRing, inputs.fCog);
 				});
 				$('#b-cog').live('change', function(event, ui){
 					updateStats(inputs);
-					//drawUtil.drawChainRing(document.getElementById("back-ring-canvas"),inputs.bCog, false);				
+					drawUtil.drawChainRing(el.backRing,inputs.bCog, false);				
 				});
 				$('#cadence').live('change', function(event, ui){
 					updateStats(inputs);
 				});
 				$('#wheel-size').live('change', function(event, ui){
 					updateStats(inputs);
+					drawUtil.drawWheel(el.backWheel);
 					changeWheelButtonTxt();
 				});
 				$('#cadence').live('change', function(event, ui){
 					updateStats(inputs);
 					changeCadenceButtonTxt();
-				});
-				$('#index-page').live('pageshow', function(event, ui){
-					drawUtil.drawWheel(document.getElementById("back-wheel-canvas"));
-					drawUtil.drawChainRing(document.getElementById("front-ring-canvas"), inputs.fCog);
-					drawUtil.drawChainRing(document.getElementById("back-ring-canvas"),inputs.bCog, false);				
 				});			
 				changeWheelButtonTxt();
 				changeCadenceButtonTxt();

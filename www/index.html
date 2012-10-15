@@ -102,6 +102,7 @@
 			var inputs = {};	
 			var display = {};
 			var el = {};
+			var timeout = {};
 			
 			function displaySetUp() {
 				display.windowW = $(window).width();
@@ -162,7 +163,10 @@
 			$(document).live('pageinit', function(event, ui) {
 				$('#f-cog').live('change', function(event, ui){
 					updateStats(inputs);
-					drawUtil.drawChainRing(el.frontRing, inputs.fCog);
+					if (timeout.frontRing) clearTimeout(timeout.frontRing);
+					timeout.frontRing = setTimeout(function () {
+						drawUtil.drawChainRing(el.frontRing, inputs.fCog);
+					},100);
 				});
 				$('#b-cog').live('change', function(event, ui){
 					updateStats(inputs);

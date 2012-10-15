@@ -190,11 +190,13 @@
 			
 			//JQ on ready
 			$(function () {
-				if (window.cordova) {
+				initAll();
+			/*	if (window.cordova) {
 					document.addEventListener("deviceready", initAll, false);
 				} else {
 					initAll();
 				}
+			*/
 			});
 			
 			$(document).live('pageinit', function(event, ui) {

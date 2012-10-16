@@ -128,8 +128,8 @@
 			Timeout.prototype.runLast = function(id, fn) {
 				//console.log(id);
 				//console.log(this[id]);
-				if (this[id] != null) clearTimeout(this[id]);
-				this[id] = setTimeout(function() { fn() }, 200);
+				if (this[id] != null) { console.log('cancled '+id);clearTimeout(this[id])};
+				this[id] = setTimeout(function() { fn() }, 100);
 			};
 			
 			var timeout = new Timeout();
@@ -170,11 +170,11 @@
 			}
 						
 			function changeWheelButtonTxt() {
-				$('#wheel-size-page-button-txt').html('Tire Diam.: ' + $('#wheel-size').val() + ' mm');
+				$('#wheel-size-page-button-txt').html($('#wheel-size').val() + 'mm Tire Diameter');
 			}
 			
 			function changeCadenceButtonTxt() {
-				$('#cadence-page-button-txt').html('Cadence: ' + $('#cadence').val() + ' rpm');
+				$('#cadence-page-button-txt').html($('#cadence').val() + ' Cadence');
 			}
 			
 			function initAll() {
@@ -221,15 +221,14 @@
 			
 			$(document).live('pageinit', function(event, ui) {
 				$('#f-cog').live('change', function(event, ui){
-					timeout.runLast('fCog',function() { 
+					timeout.runLast('fCog'+jqObj.fCog.val(),function() { 
 						updateStats(inputs);
 						drawUtil.drawChainRing(context.frontRing, inputs.fCog);
 						drawUtil.drawSkid(context.skid, inputs.ambidextrousSkidPatches);
 					});
 				});
 				$('#b-cog').live('change', function(event, ui){
-					
-					timeout.runLast('bCog',function() { 
+					timeout.runLast('bCog'+jqObj.bCog.val(),function() { 
 						updateStats(inputs);
 						drawUtil.drawChainRing(context.backRing,inputs.bCog, false);
 						drawUtil.drawSkid(context.skid, inputs.ambidextrousSkidPatches);
@@ -239,15 +238,15 @@
 					updateStats(inputs);
 				});
 				$('#wheel-size').live('change', function(event, ui){					
-					timeout.runLast('wheelSize',function() { 
+					timeout.runLast('wheelSize'+jqObj.wheelSize.val(),function() { 
 						updateStats(inputs);
 						drawUtil.drawWheel(context.backWheel);
 						drawUtil.drawSkid(context.skid, inputs.ambidextrousSkidPatches);
+						changeWheelButtonTxt();
 					});
-					changeWheelButtonTxt();
 				});
 				$('#cadence').live('change', function(event, ui){
-					timeout.runLast('cadence',function() { 
+					timeout.runLast('cadence'+jqObj.cadence.val(),function() { 
 						updateStats(inputs);
 						changeCadenceButtonTxt();
 					});
@@ -347,8 +346,10 @@
 				<label for="f-cog">Front Cog (Teeth)</label>
 				<input type="range" name="f-cog" id="f-cog" value="46" min="20" max="52" />
 				</div>
-				<a href="#cadence-page" id=="cadence-page-button" data-role="button" data-transition="flip"><span id='cadence-page-button-txt'></span></a>
-				<a href="#wheel-size-page" id=="wheel-size-page-button" data-role="button" data-transition="flip"><span id='wheel-size-page-button-txt'></span></a>				
+				<div class="ui-grid-a">
+					<div class="ui-block-a"><a href="#cadence-page" id=="cadence-page-button" data-role="button" data-transition="flip"><span id='cadence-page-button-txt'></span></a></div>
+					<div class="ui-block-b"><a href="#wheel-size-page" id=="wheel-size-page-button" data-role="button" data-transition="flip"><span id='wheel-size-page-button-txt'></span></a></div>
+				</div>
 			</div>
 		</div>
 		<div id="wheel-size-page" data-role="page" data-theme="a">

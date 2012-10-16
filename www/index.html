@@ -288,27 +288,12 @@
 					[ 13.46, '	16 x 1.5 / 37-305']
 				];
 				
-				var tireSizesOutput = "";
-				for (i=0; i< tireSizes.length; i++) {
-					tireSizesOutput = tireSizesOutput 
-					+ "<tr>"
-					+ "   <td style='vertical-align: middle; font-weight: bold;'>" + tireSizes[i][1] + "&nbsp; </td>"
-					+ "   <td style='vertical-align: middle;'>" + tireSizes[i][0].toFixed(2) + " in&nbsp; </td>"
-					+ "   <td style='vertical-align: middle;'>" + Math.round(tireSizes[i][0] * 25.4) + " mm&nbsp; </td>"
-					+ "   <td style='vertical-align: middle; '><input type='button' value='Select' id='tireSizeButton" + i + "' style='color: white;' data-mini='true' /></td>"
-					+ "</tr>"
-				}
-				$('#wheel-size-table').html($(tireSizesOutput));
-				for (i=0; i< tireSizes.length; i++) {
-					$("#tireSizeButton" + i).button();
-					(function(size) {
-						$("#tireSizeButton" + i).live('click', function() {
-							jqObj.wheelSize.val(size);
-							jqObj.wheelSize.slider('refresh');
-							return false;
-						});
-					})(Math.round(tireSizes[i][0] * 25.4));
-				}
+				$('div#wheel-size-page .wheelSizeButtons').live('click', function(event,data){
+					var size = $(this).attr("value");
+					jqObj.wheelSize.val(size);
+					jqObj.wheelSize.slider('refresh');
+					$.mobile.changePage( "#index-page", { transition: "flip"} );					
+				});
 				
 			});
 			
@@ -367,6 +352,264 @@
 				</div>		
 				<p>This is the diameter of wheel measured top to bottm. Below are estimates of common sizes.</p>
 				<table id="wheel-size-table" width="100%">
+					<tr>
+					   <td style='vertical-align: middle; font-weight: bold;'>29 inch (nominal)&nbsp; </td>
+					   <td style='vertical-align: middle;'>29.00 in&nbsp; </td>
+					   <td style='vertical-align: middle;'>737 mm&nbsp; </td>
+					   <td style='vertical-align: middle; '><button class='wheelSizeButtons' type='button' value='737' id='tireSizeButton0' style='color: white;' data-mini='true'>Select</button></td>
+					</tr>
+					<tr>
+					   <td style='vertical-align: middle; font-weight: bold;'>	28 inch (nominal)&nbsp; </td>
+					   <td style='vertical-align: middle;'>28.00 in&nbsp; </td>
+					   <td style='vertical-align: middle;'>711 mm&nbsp; </td>
+					   <td style='vertical-align: middle; '><button class='wheelSizeButtons' type='button' value='711' id='tireSizeButton1' style='color: white;' data-mini='true'>Select</button></td>
+					</tr>
+					<tr>
+					   <td style='vertical-align: middle; font-weight: bold;'>	27 inch (nominal)&nbsp; </td>
+					   <td style='vertical-align: middle;'>27.00 in&nbsp; </td>
+					   <td style='vertical-align: middle;'>686 mm&nbsp; </td>
+					   <td style='vertical-align: middle; '><button class='wheelSizeButtons' type='button' value='686' id='tireSizeButton2' style='color: white;' data-mini='true'>Select</button></td>
+					</tr>
+					<tr>
+					   <td style='vertical-align: middle; font-weight: bold;'>	26 inch (nominal)&nbsp; </td>
+					   <td style='vertical-align: middle;'>26.00 in&nbsp; </td>
+					   <td style='vertical-align: middle;'>660 mm&nbsp; </td>
+					   <td style='vertical-align: middle; '><button class='wheelSizeButtons' type='button' value='660' id='tireSizeButton3' style='color: white;' data-mini='true'>Select</button></td>
+					</tr>
+					<tr>
+					   <td style='vertical-align: middle; font-weight: bold;'>	700 X 56 / 56-622 / 29 inch&nbsp; </td>
+					   <td style='vertical-align: middle;'>29.13 in&nbsp; </td>
+					   <td style='vertical-align: middle;'>740 mm&nbsp; </td>
+					   <td style='vertical-align: middle; '><button class='wheelSizeButtons' type='button' value='740' id='tireSizeButton4' style='color: white;' data-mini='true'>Select</button></td>
+					</tr>
+					<tr>
+					   <td style='vertical-align: middle; font-weight: bold;'>	700 X 50 / 50-622 / 29 inch&nbsp; </td>
+					   <td style='vertical-align: middle;'>28.94 in&nbsp; </td>
+					   <td style='vertical-align: middle;'>735 mm&nbsp; </td>
+					   <td style='vertical-align: middle; '><button class='wheelSizeButtons' type='button' value='735' id='tireSizeButton5' style='color: white;' data-mini='true'>Select</button></td>
+					</tr>
+					<tr>
+					   <td style='vertical-align: middle; font-weight: bold;'>	700 X 44 / 44-622 / 29 inch&nbsp; </td>
+					   <td style='vertical-align: middle;'>27.86 in&nbsp; </td>
+					   <td style='vertical-align: middle;'>708 mm&nbsp; </td>
+					   <td style='vertical-align: middle; '><button class='wheelSizeButtons' type='button' value='708' id='tireSizeButton6' style='color: white;' data-mini='true'>Select</button></td>
+					</tr>
+					<tr>
+					   <td style='vertical-align: middle; font-weight: bold;'>	700 X 38 / 38-622&nbsp; </td>
+					   <td style='vertical-align: middle;'>27.32 in&nbsp; </td>
+					   <td style='vertical-align: middle;'>694 mm&nbsp; </td>
+					   <td style='vertical-align: middle; '><button class='wheelSizeButtons' type='button' value='694' id='tireSizeButton7' style='color: white;' data-mini='true'>Select</button></td>
+					</tr>
+					<tr>
+					   <td style='vertical-align: middle; font-weight: bold;'>	700 X 35 / 35-622&nbsp; </td>
+					   <td style='vertical-align: middle;'>27.17 in&nbsp; </td>
+					   <td style='vertical-align: middle;'>690 mm&nbsp; </td>
+					   <td style='vertical-align: middle; '><button class='wheelSizeButtons' type='button' value='690' id='tireSizeButton8' style='color: white;' data-mini='true'>Select</button></td>
+					</tr>
+					<tr>
+					   <td style='vertical-align: middle; font-weight: bold;'>	700 X 32 / 32-622&nbsp; </td>
+					   <td style='vertical-align: middle;'>27.00 in&nbsp; </td>
+					   <td style='vertical-align: middle;'>686 mm&nbsp; </td>
+					   <td style='vertical-align: middle; '><button class='wheelSizeButtons' type='button' value='686' id='tireSizeButton9' style='color: white;' data-mini='true'>Select</button></td>
+					</tr>
+					<tr>
+					   <td style='vertical-align: middle; font-weight: bold;'>	700 X 28 / 28-622&nbsp; </td>
+					   <td style='vertical-align: middle;'>26.76 in&nbsp; </td>
+					   <td style='vertical-align: middle;'>680 mm&nbsp; </td>
+					   <td style='vertical-align: middle; '><button class='wheelSizeButtons' type='button' value='680' id='tireSizeButton10' style='color: white;' data-mini='true'>Select</button></td>
+					</tr>
+					<tr>
+					   <td style='vertical-align: middle; font-weight: bold;'>	700 X 25 / 25-622&nbsp; </td>
+					   <td style='vertical-align: middle;'>26.38 in&nbsp; </td>
+					   <td style='vertical-align: middle;'>670 mm&nbsp; </td>
+					   <td style='vertical-align: middle; '><button class='wheelSizeButtons' type='button' value='670' id='tireSizeButton11' style='color: white;' data-mini='true'>Select</button></td>
+					</tr>
+					<tr>
+					   <td style='vertical-align: middle; font-weight: bold;'>	700 X 23 / 23-622&nbsp; </td>
+					   <td style='vertical-align: middle;'>26.28 in&nbsp; </td>
+					   <td style='vertical-align: middle;'>668 mm&nbsp; </td>
+					   <td style='vertical-align: middle; '><button class='wheelSizeButtons' type='button' value='668' id='tireSizeButton12' style='color: white;' data-mini='true'>Select</button></td>
+					</tr>
+					<tr>
+					   <td style='vertical-align: middle; font-weight: bold;'>	700 X 20 / 20-622&nbsp; </td>
+					   <td style='vertical-align: middle;'>26.14 in&nbsp; </td>
+					   <td style='vertical-align: middle;'>664 mm&nbsp; </td>
+					   <td style='vertical-align: middle; '><button class='wheelSizeButtons' type='button' value='664' id='tireSizeButton13' style='color: white;' data-mini='true'>Select</button></td>
+					</tr>
+					<tr>
+					   <td style='vertical-align: middle; font-weight: bold;'>	Tubular / Wide&nbsp; </td>
+					   <td style='vertical-align: middle;'>26.53 in&nbsp; </td>
+					   <td style='vertical-align: middle;'>674 mm&nbsp; </td>
+					   <td style='vertical-align: middle; '><button class='wheelSizeButtons' type='button' value='674' id='tireSizeButton14' style='color: white;' data-mini='true'>Select</button></td>
+					</tr>
+					<tr>
+					   <td style='vertical-align: middle; font-weight: bold;'>	Tubular / Narrow&nbsp; </td>
+					   <td style='vertical-align: middle;'>26.38 in&nbsp; </td>
+					   <td style='vertical-align: middle;'>670 mm&nbsp; </td>
+					   <td style='vertical-align: middle; '><button class='wheelSizeButtons' type='button' value='670' id='tireSizeButton15' style='color: white;' data-mini='true'>Select</button></td>
+					</tr>
+					<tr>
+					   <td style='vertical-align: middle; font-weight: bold;'>	28 X 1 1/2 / 40-635&nbsp; </td>
+					   <td style='vertical-align: middle;'>28.15 in&nbsp; </td>
+					   <td style='vertical-align: middle;'>715 mm&nbsp; </td>
+					   <td style='vertical-align: middle; '><button class='wheelSizeButtons' type='button' value='715' id='tireSizeButton16' style='color: white;' data-mini='true'>Select</button></td>
+					</tr>
+					<tr>
+					   <td style='vertical-align: middle; font-weight: bold;'>	27 X 1 3/8 / 35-630&nbsp; </td>
+					   <td style='vertical-align: middle;'>27.18 in&nbsp; </td>
+					   <td style='vertical-align: middle;'>690 mm&nbsp; </td>
+					   <td style='vertical-align: middle; '><button class='wheelSizeButtons' type='button' value='690' id='tireSizeButton17' style='color: white;' data-mini='true'>Select</button></td>
+					</tr>
+					<tr>
+					   <td style='vertical-align: middle; font-weight: bold;'>	27 X 1 1/4 / 32-630&nbsp; </td>
+					   <td style='vertical-align: middle;'>27.08 in&nbsp; </td>
+					   <td style='vertical-align: middle;'>688 mm&nbsp; </td>
+					   <td style='vertical-align: middle; '><button class='wheelSizeButtons' type='button' value='688' id='tireSizeButton18' style='color: white;' data-mini='true'>Select</button></td>
+					</tr>
+					<tr>
+					   <td style='vertical-align: middle; font-weight: bold;'>	27 X 1 1/8 / 28-630&nbsp; </td>
+					   <td style='vertical-align: middle;'>27.00 in&nbsp; </td>
+					   <td style='vertical-align: middle;'>686 mm&nbsp; </td>
+					   <td style='vertical-align: middle; '><button class='wheelSizeButtons' type='button' value='686' id='tireSizeButton19' style='color: white;' data-mini='true'>Select</button></td>
+					</tr>
+					<tr>
+					   <td style='vertical-align: middle; font-weight: bold;'>	27 X 1 / 25-630&nbsp; </td>
+					   <td style='vertical-align: middle;'>26.88 in&nbsp; </td>
+					   <td style='vertical-align: middle;'>683 mm&nbsp; </td>
+					   <td style='vertical-align: middle; '><button class='wheelSizeButtons' type='button' value='683' id='tireSizeButton20' style='color: white;' data-mini='true'>Select</button></td>
+					</tr>
+					<tr>
+					   <td style='vertical-align: middle; font-weight: bold;'>	26 X 2.35 / 60-559 / MTB&nbsp; </td>
+					   <td style='vertical-align: middle;'>26.41 in&nbsp; </td>
+					   <td style='vertical-align: middle;'>671 mm&nbsp; </td>
+					   <td style='vertical-align: middle; '><button class='wheelSizeButtons' type='button' value='671' id='tireSizeButton21' style='color: white;' data-mini='true'>Select</button></td>
+					</tr>
+					<tr>
+					   <td style='vertical-align: middle; font-weight: bold;'>	26 X 2.125 / 54-559 / MTB&nbsp; </td>
+					   <td style='vertical-align: middle;'>25.94 in&nbsp; </td>
+					   <td style='vertical-align: middle;'>659 mm&nbsp; </td>
+					   <td style='vertical-align: middle; '><button class='wheelSizeButtons' type='button' value='659' id='tireSizeButton22' style='color: white;' data-mini='true'>Select</button></td>
+					</tr>
+					<tr>
+					   <td style='vertical-align: middle; font-weight: bold;'>	26 X 1.9 / 47-559 / MTB&nbsp; </td>
+					   <td style='vertical-align: middle;'>25.75 in&nbsp; </td>
+					   <td style='vertical-align: middle;'>654 mm&nbsp; </td>
+					   <td style='vertical-align: middle; '><button class='wheelSizeButtons' type='button' value='654' id='tireSizeButton23' style='color: white;' data-mini='true'>Select</button></td>
+					</tr>
+					<tr>
+					   <td style='vertical-align: middle; font-weight: bold;'>	26 X 1.5 / 38-559 / MTB&nbsp; </td>
+					   <td style='vertical-align: middle;'>24.87 in&nbsp; </td>
+					   <td style='vertical-align: middle;'>632 mm&nbsp; </td>
+					   <td style='vertical-align: middle; '><button class='wheelSizeButtons' type='button' value='632' id='tireSizeButton24' style='color: white;' data-mini='true'>Select</button></td>
+					</tr>
+					<tr>
+					   <td style='vertical-align: middle; font-weight: bold;'>	26 X 1.25 / 32-559 / MTB&nbsp; </td>
+					   <td style='vertical-align: middle;'>24.47 in&nbsp; </td>
+					   <td style='vertical-align: middle;'>622 mm&nbsp; </td>
+					   <td style='vertical-align: middle; '><button class='wheelSizeButtons' type='button' value='622' id='tireSizeButton25' style='color: white;' data-mini='true'>Select</button></td>
+					</tr>
+					<tr>
+					   <td style='vertical-align: middle; font-weight: bold;'>	26 X 1.0 / 25-559 / MTB&nbsp; </td>
+					   <td style='vertical-align: middle;'>23.97 in&nbsp; </td>
+					   <td style='vertical-align: middle;'>609 mm&nbsp; </td>
+					   <td style='vertical-align: middle; '><button class='wheelSizeButtons' type='button' value='609' id='tireSizeButton26' style='color: white;' data-mini='true'>Select</button></td>
+					</tr>
+					<tr>
+					   <td style='vertical-align: middle; font-weight: bold;'>	650 x 38b / 38-584 650B&nbsp; </td>
+					   <td style='vertical-align: middle;'>26.00 in&nbsp; </td>
+					   <td style='vertical-align: middle;'>660 mm&nbsp; </td>
+					   <td style='vertical-align: middle; '><button class='wheelSizeButtons' type='button' value='660' id='tireSizeButton27' style='color: white;' data-mini='true'>Select</button></td>
+					</tr>
+					<tr>
+					   <td style='vertical-align: middle; font-weight: bold;'>	650 x 28C / 28-571 / 26" road/tri&nbsp; </td>
+					   <td style='vertical-align: middle;'>24.70 in&nbsp; </td>
+					   <td style='vertical-align: middle;'>627 mm&nbsp; </td>
+					   <td style='vertical-align: middle; '><button class='wheelSizeButtons' type='button' value='627' id='tireSizeButton28' style='color: white;' data-mini='true'>Select</button></td>
+					</tr>
+					<tr>
+					   <td style='vertical-align: middle; font-weight: bold;'>	650 x 25C / 25-571 / 26" road/tri&nbsp; </td>
+					   <td style='vertical-align: middle;'>24.46 in&nbsp; </td>
+					   <td style='vertical-align: middle;'>621 mm&nbsp; </td>
+					   <td style='vertical-align: middle; '><button class='wheelSizeButtons' type='button' value='621' id='tireSizeButton29' style='color: white;' data-mini='true'>Select</button></td>
+					</tr>
+					<tr>
+					   <td style='vertical-align: middle; font-weight: bold;'>	650 x 23C / 23-571 / 26" road/tri&nbsp; </td>
+					   <td style='vertical-align: middle;'>24.31 in&nbsp; </td>
+					   <td style='vertical-align: middle;'>617 mm&nbsp; </td>
+					   <td style='vertical-align: middle; '><button class='wheelSizeButtons' type='button' value='617' id='tireSizeButton30' style='color: white;' data-mini='true'>Select</button></td>
+					</tr>
+					<tr>
+					   <td style='vertical-align: middle; font-weight: bold;'>	26 X 1 3/8 / 35-590&nbsp; </td>
+					   <td style='vertical-align: middle;'>25.91 in&nbsp; </td>
+					   <td style='vertical-align: middle;'>658 mm&nbsp; </td>
+					   <td style='vertical-align: middle; '><button class='wheelSizeButtons' type='button' value='658' id='tireSizeButton31' style='color: white;' data-mini='true'>Select</button></td>
+					</tr>
+					<tr>
+					   <td style='vertical-align: middle; font-weight: bold;'>	24 inch (nominal)&nbsp; </td>
+					   <td style='vertical-align: middle;'>24.00 in&nbsp; </td>
+					   <td style='vertical-align: middle;'>610 mm&nbsp; </td>
+					   <td style='vertical-align: middle; '><button class='wheelSizeButtons' type='button' value='610' id='tireSizeButton32' style='color: white;' data-mini='true'>Select</button></td>
+					</tr>
+					<tr>
+					   <td style='vertical-align: middle; font-weight: bold;'>	24 x 1 / 25-520&nbsp; </td>
+					   <td style='vertical-align: middle;'>21.97 in&nbsp; </td>
+					   <td style='vertical-align: middle;'>558 mm&nbsp; </td>
+					   <td style='vertical-align: middle; '><button class='wheelSizeButtons' type='button' value='558' id='tireSizeButton33' style='color: white;' data-mini='true'>Select</button></td>
+					</tr>
+					<tr>
+					   <td style='vertical-align: middle; font-weight: bold;'>	32-451 /20 x 1 3/8&nbsp; </td>
+					   <td style='vertical-align: middle;'>20.15 in&nbsp; </td>
+					   <td style='vertical-align: middle;'>512 mm&nbsp; </td>
+					   <td style='vertical-align: middle; '><button class='wheelSizeButtons' type='button' value='512' id='tireSizeButton34' style='color: white;' data-mini='true'>Select</button></td>
+					</tr>
+					<tr>
+					   <td style='vertical-align: middle; font-weight: bold;'>	28-451/20 x 1 1/8&nbsp; </td>
+					   <td style='vertical-align: middle;'>19.90 in&nbsp; </td>
+					   <td style='vertical-align: middle;'>505 mm&nbsp; </td>
+					   <td style='vertical-align: middle; '><button class='wheelSizeButtons' type='button' value='505' id='tireSizeButton35' style='color: white;' data-mini='true'>Select</button></td>
+					</tr>
+					<tr>
+					   <td style='vertical-align: middle; font-weight: bold;'>	20 X 1.75 / 44-406 / BMX&nbsp; </td>
+					   <td style='vertical-align: middle;'>18.68 in&nbsp; </td>
+					   <td style='vertical-align: middle;'>474 mm&nbsp; </td>
+					   <td style='vertical-align: middle; '><button class='wheelSizeButtons' type='button' value='474' id='tireSizeButton36' style='color: white;' data-mini='true'>Select</button></td>
+					</tr>
+					<tr>
+					   <td style='vertical-align: middle; font-weight: bold;'>	20 X 1.25 / 32-406&nbsp; </td>
+					   <td style='vertical-align: middle;'>18.43 in&nbsp; </td>
+					   <td style='vertical-align: middle;'>468 mm&nbsp; </td>
+					   <td style='vertical-align: middle; '><button class='wheelSizeButtons' type='button' value='468' id='tireSizeButton37' style='color: white;' data-mini='true'>Select</button></td>
+					</tr>
+					<tr>
+					   <td style='vertical-align: middle; font-weight: bold;'>	18 x 1.5 / 40-355&nbsp; </td>
+					   <td style='vertical-align: middle;'>17.16 in&nbsp; </td>
+					   <td style='vertical-align: middle;'>436 mm&nbsp; </td>
+					   <td style='vertical-align: middle; '><button class='wheelSizeButtons' type='button' value='436' id='tireSizeButton38' style='color: white;' data-mini='true'>Select</button></td>
+					</tr>
+					<tr>
+					   <td style='vertical-align: middle; font-weight: bold;'>	17 x 1 1/4 / 28-369&nbsp; </td>
+					   <td style='vertical-align: middle;'>16.60 in&nbsp; </td>
+					   <td style='vertical-align: middle;'>422 mm&nbsp; </td>
+					   <td style='vertical-align: middle; '><button class='wheelSizeButtons' type='button' value='422' id='tireSizeButton39' style='color: white;' data-mini='true'>Select</button></td>
+					</tr>
+					<tr>
+					   <td style='vertical-align: middle; font-weight: bold;'>	16 x 1 1/2 / 40-349&nbsp; </td>
+					   <td style='vertical-align: middle;'>16.88 in&nbsp; </td>
+					   <td style='vertical-align: middle;'>429 mm&nbsp; </td>
+					   <td style='vertical-align: middle; '><button class='wheelSizeButtons' type='button' value='429' id='tireSizeButton40' style='color: white;' data-mini='true'>Select</button></td>
+					</tr>
+					<tr>
+					   <td style='vertical-align: middle; font-weight: bold;'>	16 x 1 3/8 / 35-349&nbsp; </td>
+					   <td style='vertical-align: middle;'>16.07 in&nbsp; </td>
+					   <td style='vertical-align: middle;'>408 mm&nbsp; </td>
+					   <td style='vertical-align: middle; '><button class='wheelSizeButtons' type='button' value='408' id='tireSizeButton41' style='color: white;' data-mini='true'>Select</button></td>
+					</tr>
+					<tr>
+					   <td style='vertical-align: middle; font-weight: bold;'>	16 x 1.5 / 37-305&nbsp; </td>
+					   <td style='vertical-align: middle;'>13.46 in&nbsp; </td>
+					   <td style='vertical-align: middle;'>342 mm&nbsp; </td>
+					   <td style='vertical-align: middle; '><button class='wheelSizeButtons' type='button' value='342' id='tireSizeButton42' style='color: white;' data-mini='true'>Select</button></td>
+					</tr>				
 				</table>
 			</div>
 		</div>

@@ -302,7 +302,7 @@
 				for (i=0; i< tireSizes.length; i++) {
 					$("#tireSizeButton" + i).button();
 					(function(size) {
-						$("#tireSizeButton" + i).bind('click', function() {
+						$("#tireSizeButton" + i).live('click', function() {
 							jqObj.wheelSize.val(size);
 							jqObj.wheelSize.slider('refresh');
 							return false;
@@ -345,7 +345,7 @@
 				Ambidextrous Skid Patches <span id="ambidextrous-skid-patches"></span>
 				<div data-role="fieldcontain">
 				<label for="b-cog">Back Cog (Teeth)</label>
-				<input type="range" name="b-cog" id="b-cog" value="16" min="10" max="34" />
+				<input type="range" name="b-cog" id="b-cog" value="16" min="10" max="38" />
 				</div>
 				<div data-role="fieldcontain">
 				<label for="f-cog">Front Cog (Teeth)</label>

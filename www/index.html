@@ -128,7 +128,7 @@
 			Timeout.prototype.runLast = function(id, fn) {
 				//console.log(id);
 				//console.log(this[id]);
-				if (this[id] != null) { console.log('cancled '+id);clearTimeout(this[id])};
+				if (this[id] != null) { clearTimeout(this[id])};
 				this[id] = setTimeout(function() { fn() }, 100);
 			};
 			

@@ -174,7 +174,7 @@
 				el.backRing = document.getElementById("back-ring-canvas");
 				el.frontRing = document.getElementById("front-ring-canvas");
 				
-				jqObj.wheelSize = $('input[type=number]#wheel-size');
+				jqObj.wheelSize = $('input[type="range"]#wheel-size');
 				jqObj.fCog = $('#f-cog');
 				jqObj.bCog = $('#b-cog');
 				jqObj.cadence = $('#cadence');
@@ -290,8 +290,8 @@
 				
 				$('div#wheel-size-page .wheelSizeButtons').live('click', function(event,data){
 					var size = $(this).attr("value");
-					jqObj.wheelSize.val(size);
-					jqObj.wheelSize.slider('refresh');
+					$('#wheel-size').val(size);
+					$('#wheel-size').slider('refresh');
 					$.mobile.changePage( "#index-page", { transition: "flip"} );					
 				});
 				
@@ -347,7 +347,7 @@
 			</div>
 			<div data-role="content">	
 				<div data-role="fieldcontain">
-					<label for="wheel-size"">Wheel Size (Millimeter)</label>
+					<label for="wheel-size">Wheel Size (Millimeter)</label>
 					<input type="range" name="wheel-size" id="wheel-size" value="679" min="406" max="914" />
 				</div>		
 				<p>This is the diameter of wheel measured top to bottm. Below are estimates of common sizes.</p>

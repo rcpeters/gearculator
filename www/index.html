@@ -298,7 +298,7 @@
 					+ "   <td style='vertical-align: middle; '><input type='button' value='Select' id='tireSizeButton" + i + "' style='color: white;' data-mini='true' /></td>"
 					+ "</tr>"
 				}
-				$('#wheel-size-table').html(tireSizesOutput);
+				$('#wheel-size-table').html($(tireSizesOutput));
 				for (i=0; i< tireSizes.length; i++) {
 					$("#tireSizeButton" + i).button();
 					(function(size) {

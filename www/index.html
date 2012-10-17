@@ -22,8 +22,72 @@
 				}
 				return x;
 			}
-		       
+		    
+			
 			var DrawUtil = function() {};
+			var drawUtil = new DrawUtil();
+			
+			DrawUtil.prototype._canvasCache = {};
+			
+			DrawUtil.prototype.drawChainRing = function (context, numT) {
+				var canId = "ring-canvas-" + numT;
+				if (this._canvasCache[canId] == undefined) {
+					jqObj.cahcedCanvases.append("<canvas width='"+ display.maxWheelWidthPx + "' height='"+ display.maxWheelWidthPx+"' id='" + [canId] + "' style='position: absolute;'></canvas>");
+					this._canvasCache[canId] = document.getElementById([canId]);
+					var newContext = this._canvasCache[canId].getContext("2d");
+					
+					// http://www.scienceprimer.com/drawing-regular-polygons-javascript-canvas
+					// http://html5example.net/entry/html5-canvas/html5-canvas-gears
+					var centerX = display.maxWheelWidthPx / 2;
+					var centerY = display.maxWheelWidthPx / 2;
+					var lineWidth = (6 * display.pxPerMM);
+					var teethlength = (12 * display.pxPerMM);
+					var radiusMM = 12.5 / ( 2 * Math.sin( Math.PI / numT ) );
+					var radiusPx = radiusMM * display.pxPerMM - lineWidth;
+					var sizePx = radiusPx * 2;
+					var teethRaiusPx = radiusPx + teethlength;
+					
+					newContext.clearRect(0, 0, display.maxWheelWidthPx, display.maxWheelWidthPx);
+					newContext.beginPath();
+					newContext.arc(centerX, centerY, radiusPx, 0, 2 * Math.PI, false);
+					newContext.lineWidth = lineWidth;
+					for (i = 0; i < numT; i++) {
+						newContext.moveTo (centerY +  radiusPx * Math.cos(i * 2 * Math.PI / numT), centerY +  radiusPx *  Math.sin(i * 2 * Math.PI / numT));
+						newContext.lineTo (centerX + teethRaiusPx * Math.cos(i * 2 * Math.PI / numT), centerY + teethRaiusPx * Math.sin(i * 2 * Math.PI / numT));
+					}
+					newContext.strokeStyle = "#05F017";
+					newContext.stroke();
+				} 
+				
+				context.clearRect(0, 0, display.maxWheelWidthPx, display.maxWheelWidthPx);
+				context.drawImage(this._canvasCache[canId], 0, 0);
+				
+			};
+			
+			DrawUtil.prototype.drawSkid = function (context, numSkids) {
+				var canId = "skid-canvas-" + numSkids + "-" + inputs.wheelSize;
+				if (this._canvasCache[canId] == undefined) {
+					jqObj.cahcedCanvases.append("<canvas width='"+ display.maxWheelWidthPx + "' height='"+ display.maxWheelWidthPx+"' id='" + canId + "' style='position: absolute;'></canvas>");
+					this._canvasCache[canId] = document.getElementById(canId);
+					var newContext = this._canvasCache[canId].getContext("2d");
+					var centerX = display.maxWheelWidthPx / 2;
+					var centerY = display.maxWheelWidthPx / 2;
+					var lineWidth = 15 * display.pxPerMM;
+					var radius = inputs.wheelSize * display.pxPerMM / 2 - (lineWidth * 2); 
+					
+					for (var i = 0; i < numSkids; i++) {
+						newContext.beginPath();
+						var pos = i *  360 / numSkids; 
+						newContext.strokeStyle = "#76006d";
+						newContext.lineWidth = lineWidth;
+						newContext.arc(centerX, centerY, radius, pos/360 * 2 * Math.PI, (pos + 3)/ 360 * 2 * Math.PI , false);
+						newContext.stroke();
+					}
+					
+				} 
+				context.clearRect(0, 0, display.maxWheelWidthPx, display.maxWheelWidthPx);
+				context.drawImage(this._canvasCache[canId], 0, 0);
+			};
 
 			DrawUtil.prototype.drawWheel = function (context) {
 				var centerX = display.maxWheelWidthPx / 2;
@@ -36,57 +100,6 @@
 				context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
 				context.strokeStyle = "#FA20EA";
 				context.lineWidth = 45 * display.pxPerMM;
-				context.stroke();
-				
-			};
-			
-			DrawUtil.prototype.drawSkid = function (context, numSkids) {
-				var centerX = display.maxWheelWidthPx / 2;
-				var centerY = display.maxWheelWidthPx / 2;
-				var lineWidth = 15 * display.pxPerMM;
-				var radius = inputs.wheelSize * display.pxPerMM / 2 - (lineWidth * 2); 
-				
-				context.clearRect(0, 0, display.maxWheelWidthPx, display.maxWheelWidthPx);
-				
-				for (var i = 0; i < numSkids; i++) {
-					context.beginPath();
-					var pos = i *  360 / numSkids; 
-					context.strokeStyle = "#76006d";
-					context.lineWidth = lineWidth;
-					context.arc(centerX, centerY, radius, pos/360 * 2 * Math.PI, (pos + 3)/ 360 * 2 * Math.PI , false);
-					//context.closePath();
-					context.stroke();
-				}
-				
-				
-			};
-			
-			DrawUtil.prototype.drawChainRing = function (context, numT, clearCanvas) {
-				// http://www.scienceprimer.com/drawing-regular-polygons-javascript-canvas
-				// http://html5example.net/entry/html5-canvas/html5-canvas-gears
-				var centerX = display.maxWheelWidthPx / 2;
-				var centerY = display.maxWheelWidthPx / 2;
-				var lineWidth = (6 * display.pxPerMM);
-				var teethlength = (12 * display.pxPerMM);
-				var radiusMM = 12.5 / ( 2 * Math.sin( Math.PI / numT ) );
-				var radiusPx = radiusMM * display.pxPerMM - lineWidth;
-				var sizePx = radiusPx * 2;
-				var teethRaiusPx = radiusPx + teethlength;
-				
-				context.clearRect(0, 0, display.maxWheelWidthPx, display.maxWheelWidthPx);
-				context.beginPath();
-				//context.moveTo (centerY +  sizePx * Math.cos(0), centerY +  sizePx *  Math.sin(0));
-				context.arc(centerX, centerY, radiusPx, 0, 2 * Math.PI, false);
-				//context.fillStyle = "#000000";
-				//context.fill();
-				context.lineWidth = lineWidth;
-				
-				for (i = 0; i < numT; i++) {
-					context.moveTo (centerY +  radiusPx * Math.cos(i * 2 * Math.PI / numT), centerY +  radiusPx *  Math.sin(i * 2 * Math.PI / numT));
-					context.lineTo (centerX + teethRaiusPx * Math.cos(i * 2 * Math.PI / numT), centerY + teethRaiusPx * Math.sin(i * 2 * Math.PI / numT));
-				}
-				
-				context.strokeStyle = "#05F017";
 				context.stroke();
 				
 			};
@@ -113,7 +126,7 @@
 				jqObj.ambidextrousSkidPatches.html(inputs.ambidextrousSkidPatches);
 			}
 			
-			var drawUtil = new DrawUtil();
+			
 			
 			var constants = {};
 			constants.maxWheelWidthMM = 914.4;
@@ -182,6 +195,7 @@
 				el.skid = document.getElementById("skid-canvas");	
 				el.backRing = document.getElementById("back-ring-canvas");
 				el.frontRing = document.getElementById("front-ring-canvas");
+				el.cahcedCanvases  = document.getElementById("cahced-canvases");
 				
 				jqObj.wheelSize = $('input[type="range"]#wheel-size');
 				jqObj.fCog = $('#f-cog');
@@ -192,6 +206,7 @@
 				jqObj.mph = $("#mph");
 				jqObj.skidPatches = $("#skid-patches");
 				jqObj.ambidextrousSkidPatches = $("#ambidextrous-skid-patches");
+				jqObj.cahcedCanvases= $("#cahced-canvases");
 				
 				context.backWheel = el.backWheel.getContext("2d");
 				context.skid = el.skid.getContext("2d");
@@ -349,6 +364,9 @@
 				<div class="ui-grid-a">
 					<div class="ui-block-a"><a href="#cadence-page" id=="cadence-page-button" data-role="button" data-transition="flow"><span id='cadence-page-button-txt'></span></a></div>
 					<div class="ui-block-b"><a href="#wheel-size-page" id=="wheel-size-page-button" data-role="button" data-transition="flow"><span id='wheel-size-page-button-txt'></span></a></div>
+				</div>
+				<div id="cahced-canvases">
+				sdfds
 				</div>
 			</div>
 		</div>

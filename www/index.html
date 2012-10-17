@@ -239,14 +239,14 @@
 			
 			$(document).live('pageinit', function(event, ui) {
 				$('#f-cog').live('change', function(event, ui){
-					timeout.runLast('fCog'+jqObj.fCog.val(),function() { 
+					timeout.runLast('fCog',function() { 
 						updateStats(inputs);
 						drawUtil.drawChainRing(context.frontRing, inputs.fCog);
 						drawUtil.drawSkid(context.skid, inputs.ambidextrousSkidPatches);
 					});
 				});
 				$('#b-cog').live('change', function(event, ui){
-					timeout.runLast('bCog'+jqObj.bCog.val(),function() { 
+					timeout.runLast('bCog',function() { 
 						updateStats(inputs);
 						drawUtil.drawChainRing(context.backRing,inputs.bCog, false);
 						drawUtil.drawSkid(context.skid, inputs.ambidextrousSkidPatches);
@@ -256,7 +256,7 @@
 					updateStats(inputs);
 				});
 				$('#wheel-size').live('change', function(event, ui){					
-					timeout.runLast('wheelSize'+jqObj.wheelSize.val(),function() { 
+					timeout.runLast('wheelSize',function() { 
 						updateStats(inputs);
 						drawUtil.drawWheel(context.backWheel);
 						drawUtil.drawSkid(context.skid, inputs.ambidextrousSkidPatches);
@@ -264,7 +264,7 @@
 					});
 				});
 				$('#cadence').live('change', function(event, ui){
-					timeout.runLast('cadence'+jqObj.cadence.val(),function() { 
+					timeout.runLast('cadence',function() { 
 						updateStats(inputs);
 						changeCadenceButtonTxt();
 					});

@@ -29,10 +29,14 @@
 			
 			DrawUtil.prototype._canvasCache = {};
 			
-			DrawUtil.prototype.drawChainRing = function (context, numT) {
-				var canId = "ring-canvas-" + numT;
-				if (this._canvasCache[canId] == undefined) {
+			DrawUtil.prototype.cachedRingId = function(numT) {
+				return "ring-canvas-" + numT;
+			}
+			
+			DrawUtil.prototype.drawCachedRing = function (numT) {
+					var canId = this.cachedRingId(numT);
 					console.log("new canvas" + canId);
+					
 					jqObj.cahcedCanvases.append("<canvas width='"+ display.maxWheelWidthPx + "' height='"+ display.maxWheelWidthPx+"' id='" + [canId] + "' style='position: absolute;'></canvas>");
 					this._canvasCache[canId] = document.getElementById([canId]);
 					var newContext = this._canvasCache[canId].getContext("2d");
@@ -58,16 +62,21 @@
 					}
 					newContext.strokeStyle = "#05F017";
 					newContext.stroke();
-				} 
-				
+				 
+			}
+			
+			DrawUtil.prototype.drawChainRing = function (context, numT) {
+				var canId = this.cachedRingId(numT);
+				if (this._canvasCache[canId] == undefined) {
+					this.drawCachedRing(numT);
+				}
 				context.clearRect(0, 0, display.maxWheelWidthPx, display.maxWheelWidthPx);
 				context.drawImage(this._canvasCache[canId], 0, 0);
 				
 			};
 			
-			DrawUtil.prototype.drawSkid = function (context, numSkids) {
-				var canId = "skid-canvas-" + numSkids + "-" + inputs.wheelSize;
-				if (this._canvasCache[canId] == undefined) {
+			DrawUtil.prototype.drawCachedSkid = function(numSkids) {
+					var canId = this.cachedSkidId(numSkids);
 					console.log("new canvas" + canId);
 					jqObj.cahcedCanvases.append("<canvas width='"+ display.maxWheelWidthPx + "' height='"+ display.maxWheelWidthPx+"' id='" + canId + "' style='position: absolute;'></canvas>");
 					this._canvasCache[canId] = document.getElementById(canId);
@@ -84,8 +93,17 @@
 						newContext.lineWidth = lineWidth;
 						newContext.arc(centerX, centerY, radius, pos/360 * 2 * Math.PI, (pos + 3)/ 360 * 2 * Math.PI , false);
 						newContext.stroke();
-					}
-					
+					}			
+			};
+			
+			DrawUtil.prototype.cachedSkidId = function(numSkids) {
+				return "skid-canvas-" + numSkids;
+			}
+			
+			DrawUtil.prototype.drawSkid = function (context, numSkids) {
+				var canId = this.cachedSkidId(numSkids);
+				if (this._canvasCache[canId] == undefined) {
+					this.drawCachedSkid(numSkids);
 				} 
 				context.clearRect(0, 0, display.maxWheelWidthPx, display.maxWheelWidthPx);
 				context.drawImage(this._canvasCache[canId], 0, 0);
@@ -144,7 +162,7 @@
 			Timeout.prototype.runLast = function(id, fn) {
 				//console.log(id);
 				//console.log(this[id]);
-				if (this._cache[id] != null) { clearTimeout(this._cache[id])};
+				//if (this._cache[id] != null) { clearTimeout(this._cache[id])};
 				this._cache[id] = setTimeout(function() { fn() }, 100);
 			};
 			
@@ -194,6 +212,9 @@
 			}
 			
 			function initAll() {
+				//show    
+				$.mobile.loading( 'show' );
+
 				el.backWheel = document.getElementById("back-wheel-canvas");
 				el.skid = document.getElementById("skid-canvas");	
 				el.backRing = document.getElementById("back-ring-canvas");
@@ -218,12 +239,23 @@
 	
 				displaySetUp();	
 				updateStats(inputs);
+				
+				for (var i = 0; i < 74; i++) {
+					drawUtil.drawCachedSkid(i);
+				}
+				for (var i = 8; i < 54; i++) {
+					drawUtil.drawCachedRing(i);
+				}
+
 				drawUtil.drawWheel(context.backWheel);
 				drawUtil.drawChainRing(context.backRing,inputs.bCog);
 				drawUtil.drawChainRing(context.frontRing, inputs.fCog);
 				drawUtil.drawSkid(context.skid, inputs.ambidextrousSkidPatches);
 				changeWheelButtonTxt();
 				changeCadenceButtonTxt();
+				//hide
+				$.mobile.loading( 'hide' );
+
 			}
 			
 			//JQ on ready

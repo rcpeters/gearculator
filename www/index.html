@@ -66,6 +66,7 @@
 			}
 			
 			DrawUtil.prototype.drawChainRing = function (context, numT) {
+				console.log("drawing rings: " + numT);
 				var canId = this.cachedRingId(numT);
 				if (this._canvasCache[canId] == undefined) {
 					this.drawCachedRing(numT);
@@ -124,11 +125,19 @@
 				
 			};
 			
+			function updateSkidPatches(fCog, bCog) {
+				var ratioGCD = gcd(fCog, bCog);
+				inputs.skidPatches = inputs.bCog / ratioGCD;
+				inputs.ambidextrousSkidPatches = inputs.skidPatches;
+				if ( fCog % 2 == 0) inputs.ambidextrousSkidPatches = inputs.skidPatches * 2;
+			}
+			
 			function updateStats(inputs) {
-				inputs.wheelSize = jqObj.wheelSize.val();
-				inputs.fCog  =jqObj.fCog.val();
-				inputs.bCog  = jqObj.bCog.val();
-				inputs.cadence  = jqObj.cadence.val();
+				inputs.wheelSize = $('#wheel-size').val();  // having issues with this one
+				console.log(jqObj.wheelSize.val());
+				inputs.fCog = jqObj.fCog.val();
+				inputs.bCog = jqObj.bCog.val();
+				inputs.cadence = jqObj.cadence.val();
 
 				var ratio = inputs.fCog / inputs.bCog;
 				var ratioGCD = gcd(inputs.fCog, inputs.bCog);
@@ -162,7 +171,7 @@
 			Timeout.prototype.runLast = function(id, fn) {
 				//console.log(id);
 				//console.log(this[id]);
-				if (this._cache[id] != null) { clearTimeout(this._cache[id])};
+				//if (this._cache[id] != null) { clearTimeout(this._cache[id])};
 				this._cache[id] = setTimeout(function() { fn() }, 100);
 			};
 			
@@ -204,11 +213,11 @@
 			}
 						
 			function changeWheelButtonTxt() {
-				$('#wheel-size-page-button-txt').html($('#wheel-size').val() + 'mm Tire Diameter');
+				$('#wheel-size-page-button-txt').html(jqObj.wheelSize.val() + 'mm Tire Diameter');
 			}
 			
 			function changeCadenceButtonTxt() {
-				$('#cadence-page-button-txt').html($('#cadence').val() + ' Cadence');
+				$('#cadence-page-button-txt').html(jqObj.cadence + ' Cadence');
 			}
 			
 			function initAll() {
@@ -221,7 +230,7 @@
 				el.frontRing = document.getElementById("front-ring-canvas");
 				el.cahcedCanvases  = document.getElementById("cahced-canvases");
 				
-				jqObj.wheelSize = $('input[type="range"]#wheel-size');
+				jqObj.wheelSize = $('#wheel-size');
 				jqObj.fCog = $('#f-cog');
 				jqObj.bCog = $('#b-cog');
 				jqObj.cadence = $('#cadence');
@@ -239,6 +248,7 @@
 	
 				displaySetUp();	
 				updateStats(inputs);
+				display.bCog = inputs.bCog;
 				
 				for (var i = 0; i < 74; i++) {
 					drawUtil.drawCachedSkid(i);
@@ -269,6 +279,21 @@
 			*/
 			});
 			
+			function animateBCog() {
+				inputs.bCog = jqObj.bCog.val();
+				if (display.bCog == inputs.bCog) return;
+				if (Math.abs(display.bCog - inputs.bCog) == 1) var numCog = inputs.bCog;
+				else var numCog =  Math.ceil((Number(display.bCog) + Number(inputs.bCog))/2);
+				display.bCog = numCog;
+				//console.log(numCog +" , " + inputs.bCog);
+				drawUtil.drawChainRing(context.backRing,numCog, false);
+				updateSkidPatches(inputs.fCog, numCog);
+				drawUtil.drawSkid(context.skid, inputs.ambidextrousSkidPatches);
+				setTimeout(function() { 
+					animateBCog();
+				}, 200);
+			}
+			
 			$(document).live('pageinit', function(event, ui) {
 				$('#f-cog').live('change', function(event, ui){
 					timeout.runLast('fCog',function() { 
@@ -278,11 +303,9 @@
 					});
 				});
 				$('#b-cog').live('change', function(event, ui){
-					timeout.runLast('bCog',function() { 
-						updateStats(inputs);
-						drawUtil.drawChainRing(context.backRing,inputs.bCog, false);
-						drawUtil.drawSkid(context.skid, inputs.ambidextrousSkidPatches);
-					});
+					 setTimeout(function() { 
+						animateBCog();
+					}, 200);
 				});
 				$('#cadence').live('change', function(event, ui){
 					updateStats(inputs);
@@ -351,6 +374,7 @@
 				
 				$('div#wheel-size-page .wheelSizeButtons').live('click', function(event,data){
 					var size = $(this).attr("value");
+					$('#wheel-size-page').page();
 					$('#wheel-size').val(size);
 					$('#wheel-size').slider('refresh');
 					$.mobile.changePage( "#index-page", { transition: "fade"} );					

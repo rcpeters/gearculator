@@ -353,7 +353,7 @@
 					var size = $(this).attr("value");
 					$('#wheel-size').val(size);
 					$('#wheel-size').slider('refresh');
-					$.mobile.changePage( "#index-page", { transition: "flow"} );					
+					$.mobile.changePage( "#index-page", { transition: "fade"} );					
 				});
 				
 			});
@@ -365,7 +365,7 @@
 		<div id="index-page" data-role="page" data-theme="a">
 			<div data-role="header"> 
 				<h1>Gearculator</h1>
-				<a href="#about-page" data-role="button" data-transition="flow">About</a>							
+				<a href="#about-page" data-role="button" data-transition="fade">About</a>							
 			</div> 
 			<div data-role="content" style="padding-top: 0px;">	
 				<div id="canvas-container">
@@ -397,8 +397,8 @@
 				<input type="range" name="f-cog" id="f-cog" value="46" min="20" max="52" />
 				</div>
 				<div class="ui-grid-a">
-					<div class="ui-block-a"><a href="#cadence-page" id=="cadence-page-button" data-role="button" data-transition="flow"><span id='cadence-page-button-txt'></span></a></div>
-					<div class="ui-block-b"><a href="#wheel-size-page" id=="wheel-size-page-button" data-role="button" data-transition="flow"><span id='wheel-size-page-button-txt'></span></a></div>
+					<div class="ui-block-a"><a href="#cadence-page" id=="cadence-page-button" data-role="button" data-transition="fade"><span id='cadence-page-button-txt'></span></a></div>
+					<div class="ui-block-b"><a href="#wheel-size-page" id=="wheel-size-page-button" data-role="button" data-transition="fade"><span id='wheel-size-page-button-txt'></span></a></div>
 				</div>
 				<div id="cahced-canvases" style="display: none;">
 				</div>
@@ -407,7 +407,7 @@
 		<div id="wheel-size-page" data-role="page" data-theme="a">
 			<div data-role="header">
 				<h1>Wheel Size</h1>
-				<a href="#index-page" data-role="botton" data-transition="flow">Back</a>
+				<a href="#index-page" data-role="botton" data-transition="fade">Back</a>
 			</div>
 			<div data-role="content"	>	
 				<div data-role="fieldcontain">
@@ -680,7 +680,7 @@
 		<div id="cadence-page" data-role="page" data-theme="a">
 			<div data-role="header">
 				<h1>Cadence</h1>
-				<a href="#index-page" data-role="botton" data-transition="flow">Back</a>
+				<a href="#index-page" data-role="botton" data-transition="fade">Back</a>
 			</div>
 			<div data-role="content">	
 				<p>Cadence is how many times the pedals rotate around per a mintue.</p>
@@ -693,7 +693,7 @@
 		<div id="about-page" data-role="page" data-theme="a">
 			<div data-role="header">
 				<h1>About Gearculator</h1>
-				<a href="#index-page" data-role="botton" data-transition="flow">Back</a>
+				<a href="#index-page" data-role="botton" data-transition="fade">Back</a>
 			</div>
 			<div data-role="content">	
 				<p>blah blah blah, donate:, blah blah blah Sheldon Brown rocks blah blah b</p>		

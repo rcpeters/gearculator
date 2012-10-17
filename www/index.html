@@ -79,7 +79,9 @@
 			DrawUtil.prototype.drawCachedSkid = function(numSkids) {
 					var canId = this.cachedSkidId(numSkids);
 					console.log("new canvas" + canId);
-					jqObj.cahcedCanvases.append("<canvas width='"+ display.maxWheelWidthPx + "' height='"+ display.maxWheelWidthPx+"' id='" + canId + "' style='position: absolute;'></canvas>");
+					if (!document.getElementById(canId)) {
+						jqObj.cahcedCanvases.append("<canvas width='"+ display.maxWheelWidthPx + "' height='"+ display.maxWheelWidthPx+"' id='" + canId + "' style='position: absolute;'></canvas>");
+					}
 					this._canvasCache[canId] = document.getElementById(canId);
 					var newContext = this._canvasCache[canId].getContext("2d");
 					var centerX = display.maxWheelWidthPx / 2;
@@ -87,6 +89,7 @@
 					var lineWidth = 15 * display.pxPerMM;
 					var radius = inputs.wheelSize * display.pxPerMM / 2 - (lineWidth * 2); 
 					
+					newContext.clearRect(0, 0, display.maxWheelWidthPx, display.maxWheelWidthPx);
 					for (var i = 0; i < numSkids; i++) {
 						newContext.beginPath();
 						var pos = i *  360 / numSkids; 
@@ -286,7 +289,6 @@
 			function animateBCog() {
 				inputs.bCog = jqObj.bCog.val();
 				if (display.bCog == inputs.bCog) {
-					
 				    return;
 				}
 				if (Math.abs(display.bCog - inputs.bCog) < 3) var numCog = inputs.bCog;
@@ -316,7 +318,7 @@
 				drawUtil.drawSkid(context.skid, inputs.ambidextrousSkidPatches);
 				setTimeout(function() { 
 					animateFCog();
-				}, 50);
+				}, 100);
 			}
 
 			
@@ -326,30 +328,44 @@
 					updateStats(inputs);
 					setTimeout(function() { 
 						animateFCog();
-					}, 200);
+					}, 100);
 				});
+				
 				$('#b-cog').live('change', function(event, ui){
 					inputs.bCog = jqObj.bCog.val();
 					updateStats(inputs);
 					 setTimeout(function() { 
 						animateBCog();
-					}, 200);
+					}, 100);
 				});
+				
 				$('#wheel-size').live('change', function(event, ui){					
 					inputs.wheelSize = $('#wheel-size').val();  // having issues with this one								
 					updateStats(inputs);
 					timeout.runLast('wheelSize',function() { 
 						updateStats(inputs);
+						for (var i = 0; i < 74; i++) {
+							drawUtil.drawCachedSkid(i);
+						}						
 						drawUtil.drawWheel(context.backWheel);
 						drawUtil.drawSkid(context.skid, inputs.ambidextrousSkidPatches);
 						changeWheelButtonTxt();
 					});
 				});
+				
 				$('#cadence').live('change', function(event, ui){
 					inputs.cadence = jqObj.cadence.val();
 					updateStats(inputs);
 					changeCadenceButtonTxt();
 				});			
+				
+				$('div#wheel-size-page .wheelSizeButtons').live('click', function(event,data){
+					var size = $(this).attr("value");
+					$('#wheel-size-page').page();
+					$('#wheel-size').val(size);
+					$('#wheel-size').slider('refresh');
+					$.mobile.changePage( "#index-page", { transition: "flip"} );					
+				});
 				
 				// tireSize: inch , description
 				var tireSizes = [
@@ -397,14 +413,6 @@
 					[ 16.07, '	16 x 1 3/8 / 35-349'],
 					[ 13.46, '	16 x 1.5 / 37-305']
 				];
-				
-				$('div#wheel-size-page .wheelSizeButtons').live('click', function(event,data){
-					var size = $(this).attr("value");
-					$('#wheel-size-page').page();
-					$('#wheel-size').val(size);
-					$('#wheel-size').slider('refresh');
-					$.mobile.changePage( "#index-page", { transition: "flip"} );					
-				});
 				
 			});
 			

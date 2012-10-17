@@ -139,12 +139,13 @@
 			var jqObj = {};
 			var context = {};
 			var Timeout = function(){};
+			Timeout.prototype._cache = {};
 			
 			Timeout.prototype.runLast = function(id, fn) {
 				//console.log(id);
 				//console.log(this[id]);
-				if (this[id] != null) { clearTimeout(this[id])};
-				this[id] = setTimeout(function() { fn() }, 100);
+				if (this._cache[id] != null) { clearTimeout(this._cache[id])};
+				this._cache[id] = setTimeout(function() { fn() }, 100);
 			};
 			
 			var timeout = new Timeout();

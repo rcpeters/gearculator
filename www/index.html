@@ -249,6 +249,7 @@
 				displaySetUp();	
 				updateStats(inputs);
 				display.bCog = inputs.bCog;
+				display.fCog = inputs.fCog;
 				
 				for (var i = 0; i < 74; i++) {
 					drawUtil.drawCachedSkid(i);
@@ -281,26 +282,46 @@
 			
 			function animateBCog() {
 				inputs.bCog = jqObj.bCog.val();
-				if (display.bCog == inputs.bCog) return;
+				if (display.bCog == inputs.bCog) {
+					updateStats(inputs);
+				    return;
+				}
 				if (Math.abs(display.bCog - inputs.bCog) == 1) var numCog = inputs.bCog;
 				else var numCog =  Math.ceil((Number(display.bCog) + Number(inputs.bCog))/2);
 				display.bCog = numCog;
 				//console.log(numCog +" , " + inputs.bCog);
 				drawUtil.drawChainRing(context.backRing,numCog, false);
-				updateSkidPatches(inputs.fCog, numCog);
+				updateSkidPatches(display.fCog, numCog);
 				drawUtil.drawSkid(context.skid, inputs.ambidextrousSkidPatches);
 				setTimeout(function() { 
 					animateBCog();
 				}, 200);
 			}
 			
+			function animateFCog() {
+				inputs.fCog = jqObj.fCog.val();
+				if (display.fCog == inputs.fCog) {
+					updateStats(inputs);
+					return;
+				}
+				if (Math.abs(display.fCog - inputs.fCog) == 1) var numCog = inputs.fCog;
+				else var numCog =  Math.ceil((Number(display.fCog) + Number(inputs.fCog))/2);
+				display.fCog = numCog;
+				//console.log(numCog +" , " + inputs.bCog);
+				drawUtil.drawChainRing(context.frontRing,numCog);
+				updateSkidPatches(display.bCog, numCog);
+				drawUtil.drawSkid(context.skid, inputs.ambidextrousSkidPatches);
+				setTimeout(function() { 
+					animateFCog();
+				}, 200);
+			}
+
+			
 			$(document).live('pageinit', function(event, ui) {
 				$('#f-cog').live('change', function(event, ui){
-					timeout.runLast('fCog',function() { 
-						updateStats(inputs);
-						drawUtil.drawChainRing(context.frontRing, inputs.fCog);
-						drawUtil.drawSkid(context.skid, inputs.ambidextrousSkidPatches);
-					});
+					setTimeout(function() { 
+						animateFCog();
+					}, 200);
 				});
 				$('#b-cog').live('change', function(event, ui){
 					 setTimeout(function() { 

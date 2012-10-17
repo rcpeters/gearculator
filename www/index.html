@@ -217,7 +217,7 @@
 			}
 			
 			function changeCadenceButtonTxt() {
-				$('#cadence-page-button-txt').html(jqObj.cadence + ' Cadence');
+				$('#cadence-page-button-txt').html(jqObj.cadence.val() + ' Cadence');
 			}
 			
 			function initAll() {
@@ -286,7 +286,7 @@
 					updateStats(inputs);
 				    return;
 				}
-				if (Math.abs(display.bCog - inputs.bCog) == 1) var numCog = inputs.bCog;
+				if (Math.abs(display.bCog - inputs.bCog) < 3) var numCog = inputs.bCog;
 				else var numCog =  Math.ceil((Number(display.bCog) + Number(inputs.bCog))/2);
 				display.bCog = numCog;
 				//console.log(numCog +" , " + inputs.bCog);
@@ -304,7 +304,7 @@
 					updateStats(inputs);
 					return;
 				}
-				if (Math.abs(display.fCog - inputs.fCog) == 1) var numCog = inputs.fCog;
+				if (Math.abs(display.fCog - inputs.fCog) < 3) var numCog = inputs.fCog;
 				else var numCog =  Math.ceil((Number(display.fCog) + Number(inputs.fCog))/2);
 				display.fCog = numCog;
 				//console.log(numCog +" , " + inputs.bCog);

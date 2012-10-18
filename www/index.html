@@ -321,6 +321,17 @@
 					animateFCog();
 				}, 100);
 			}
+			
+			function changeWheelSize() {
+				$.mobile.loading( 'show' );
+				updateStats(inputs);
+				for (var i = 0; i < 74; i++) {
+					drawUtil.drawCachedSkid(i);
+				}						
+				drawUtil.drawWheel(context.backWheel);
+				drawUtil.drawSkid(context.skid, inputs.ambidextrousSkidPatches);	
+				$.mobile.loading( 'hide' );
+			}
 
 			
 			$(document).live('pageinit', function(event, ui) {
@@ -341,16 +352,8 @@
 				});
 				
 				$('#wheel-size').live('change', function(event, ui){					
-					inputs.wheelSize = $('#wheel-size').val();  // having issues with this one								
-					updateStats(inputs);
-					timeout.runLast('wheelSize',function() { 
-						updateStats(inputs);
-						for (var i = 0; i < 74; i++) {
-							drawUtil.drawCachedSkid(i);
-						}						
-						drawUtil.drawWheel(context.backWheel);
-						drawUtil.drawSkid(context.skid, inputs.ambidextrousSkidPatches);
-					});
+					//inputs.wheelSize = $('#wheel-size').val();  // having issues with this one								
+					//changeWheelSize();
 				});
 				
 				$('#cadence').live('change', function(event, ui){
@@ -363,8 +366,19 @@
 					$('#wheel-size-page').page();
 					$('#wheel-size').val(size);
 					$('#wheel-size').slider('refresh');
-					$.mobile.changePage( "#index-page", { transition: "flip"} );					
+					$.mobile.changePage( "#index-page", { transition: "flip"} );		
 				});
+				
+				$(document).bind('pageinit', function() {
+					$('div#index-page').live('pageshow', function(event,data) {
+						if (inputs.wheelSize != $('#wheel-size').val()) {
+							inputs.wheelSize = $('#wheel-size').val();
+							changeWheelSize();
+						}
+					});
+				});
+				
+				
 				
 				// tireSize: inch , description
 				var tireSizes = [

@@ -66,7 +66,7 @@
 			}
 			
 			DrawUtil.prototype.drawChainRing = function (context, numT) {
-				console.log("drawing rings: " + numT);
+				//console.log("drawing rings: " + numT);
 				var canId = this.cachedRingId(numT);
 				if (this._canvasCache[canId] == undefined) {
 					this.drawCachedRing(numT);
@@ -335,29 +335,29 @@
 
 			
 			$(document).live('pageinit', function(event, ui) {
-				$('#f-cog').live('change', function(event, ui){
-					inputs.fCog = jqObj.fCog.val();
+				$('div#index-page input#f-cog').live('change', function(event, ui){
+					inputs.fCog = $('div#index-page input#f-cog').val();
 					updateStats(inputs);
 					setTimeout(function() { 
 						animateFCog();
 					}, 100);
 				});
 				
-				$('#b-cog').live('change', function(event, ui){
-					inputs.bCog = jqObj.bCog.val();
+				$('div#index-page input#b-cog').live('change', function(event, ui){
+					inputs.bCog = $('div#index-page input#f-cog').val();
 					updateStats(inputs);
 					 setTimeout(function() { 
 						animateBCog();
 					}, 100);
 				});
 				
-				$('#wheel-size').live('change', function(event, ui){					
-					//inputs.wheelSize = $('#wheel-size').val();  // having issues with this one								
+				$('div#wheel-size-page input#wheel-size').live('change', function(event, ui){					
+					//inputs.wheelSize = $('div#wheel-size-page input#wheel-size').val();  // having issues with this one								
 					//changeWheelSize();
 				});
 				
-				$('#cadence').live('change', function(event, ui){
-					inputs.cadence = $('#cadence').val();
+				$('div#cadence-page input#cadence').live('change', function(event, ui){
+					inputs.cadence = $('div#cadence-page input#cadence').val();
 					updateStats(inputs);
 				});			
 				

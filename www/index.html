@@ -150,6 +150,9 @@
 				
 				jqObj.skidPatches.html(inputs.skidPatches);
 				jqObj.ambidextrousSkidPatches.html(inputs.ambidextrousSkidPatches);
+				changeWheelButtonTxt();
+				changeCadenceButtonTxt();
+
 			}
 			
 			
@@ -210,11 +213,11 @@
 			}
 						
 			function changeWheelButtonTxt() {
-				$('#wheel-size-page-button-txt').html(jqObj.wheelSize.val() + 'mm Tire Diameter');
+				$('#wheel-size-page-button-txt').html(inputs.wheelSize + 'mm Tire Diameter');
 			}
 			
 			function changeCadenceButtonTxt() {
-				$('#cadence-page-button-txt').html(jqObj.cadence.val() + ' Cadence');
+				$('#cadence-page-button-txt').html(inputs.cadence + ' Cadence');
 			}
 			
 			function initAll() {
@@ -268,8 +271,6 @@
 				drawUtil.drawChainRing(context.backRing,inputs.bCog);
 				drawUtil.drawChainRing(context.frontRing, inputs.fCog);
 				drawUtil.drawSkid(context.skid, inputs.ambidextrousSkidPatches);
-				changeWheelButtonTxt();
-				changeCadenceButtonTxt();
 				//hide
 				$.mobile.loading( 'hide' );
 
@@ -349,14 +350,12 @@
 						}						
 						drawUtil.drawWheel(context.backWheel);
 						drawUtil.drawSkid(context.skid, inputs.ambidextrousSkidPatches);
-						changeWheelButtonTxt();
 					});
 				});
 				
 				$('#cadence').live('change', function(event, ui){
-					inputs.cadence = jqObj.cadence.val();
+					inputs.cadence = $('#cadence').val();
 					updateStats(inputs);
-					changeCadenceButtonTxt();
 				});			
 				
 				$('div#wheel-size-page .wheelSizeButtons').live('click', function(event,data){

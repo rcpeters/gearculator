@@ -294,7 +294,6 @@
 			
 			//JQ on ready
 			$(function () {
-				initAll();
 			/*	if (window.cordova) {
 					document.addEventListener("deviceready", initAll, false);
 				} else {
@@ -358,6 +357,8 @@
 
 			
 			$(document).live('pageinit', function(event, ui) {
+				initAll();
+			
 				$('div#index-page input#f-cog').live('change', function(event, ui){
 					inputs.fCog = $('div#index-page input#f-cog').val();
 					updateStats(inputs);
@@ -396,15 +397,17 @@
 				});
 				
 				$('div#index-page').live('pageshow', function(event,data) {
-					if (inputs.wheelSize != $('#wheel-size').val()) {
-						inputs.wheelSize = $('#wheel-size').val();
+					if (inputs.wheelSize != $('div#wheel-size-page #wheel-size').val()) {
+						inputs.wheelSize = $('div#wheel-size-page #wheel-size').val();
 						changeWheelSize();
 					}
 				});
 					
 				$('div#cadence-page').live('pageshow', function(event,data) {
 					updateCadenceTable();
-				});				
+				});
+				
+								
 			});
 			
 			

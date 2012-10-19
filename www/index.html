@@ -8,7 +8,7 @@
 		<link rel="stylesheet" type="text/css" href="css/index.css" />
         <link rel="stylesheet" href="css/jquery.mobile-1.2.0.min.css" />
         <style type="text/css">        	
-        	#wheel-size-table {
+        	#wheel-size-table, #cadence-table {
         		width: 100%;
         	}
 
@@ -44,7 +44,6 @@
 			
 			DrawUtil.prototype.drawCachedRing = function (numT) {
 					var canId = this.cachedRingId(numT);
-					console.log("new canvas" + canId);
 					
 					jqObj.cahcedCanvases.append("<canvas width='"+ display.maxWheelWidthPx + "' height='"+ display.maxWheelWidthPx+"' id='" + [canId] + "' style='position: absolute;'></canvas>");
 					this._canvasCache[canId] = document.getElementById([canId]);
@@ -75,7 +74,6 @@
 			}
 			
 			DrawUtil.prototype.drawChainRing = function (context, numT) {
-				//console.log("drawing rings: " + numT);
 				var canId = this.cachedRingId(numT);
 				if (this._canvasCache[canId] == undefined) {
 					this.drawCachedRing(numT);
@@ -87,7 +85,6 @@
 			
 			DrawUtil.prototype.drawCachedSkid = function(numSkids) {
 					var canId = this.cachedSkidId(numSkids);
-					console.log("new canvas" + canId);
 					if (!document.getElementById(canId)) {
 						jqObj.cahcedCanvases.append("<canvas width='"+ display.maxWheelWidthPx + "' height='"+ display.maxWheelWidthPx+"' id='" + canId + "' style='position: absolute;'></canvas>");
 					}
@@ -144,18 +141,28 @@
 				if ( fCog % 2 == 0) inputs.ambidextrousSkidPatches = inputs.skidPatches * 2;
 			}
 			
+			function toMph(kph) {
+				return kph * 0.621371;
+			}
+			
+			function calcKph(ratio,wheelSizeMM, cadence) {
+				return ratio * wheelSizeMM * Math.PI * cadence * 60 / 1000000;
+			}
+			
+			function calcRatio() {
+				return inputs.fCog / inputs.bCog;
+			}
+			
 			function updateStats(inputs) {
-				var ratio = inputs.fCog / inputs.bCog;
+				var ratio = calcRatio();
 				var ratioGCD = gcd(inputs.fCog, inputs.bCog);
 				inputs.skidPatches = inputs.bCog / ratioGCD;
 				inputs.ambidextrousSkidPatches = inputs.skidPatches;
 				if ( inputs.fCog % 2 == 0) inputs.ambidextrousSkidPatches = inputs.skidPatches * 2;
-				var kph = ratio * inputs.wheelSize * Math.PI * inputs.cadence * 60 / 1000000;
-				var mph = kph * 0.621371;
-				
+				var kph = calcKph(ratio,inputs.wheelSize, inputs.cadence);
 				jqObj.ratio.html(ratio.toFixed(2));
 				jqObj.kph.html(kph.toFixed(2));
-				jqObj.mph.html(mph.toFixed(2));
+				jqObj.mph.html(toMph(kph).toFixed(2));
 				
 				jqObj.skidPatches.html(inputs.skidPatches);
 				jqObj.ambidextrousSkidPatches.html(inputs.ambidextrousSkidPatches);
@@ -178,8 +185,6 @@
 			Timeout.prototype._cache = {};
 			
 			Timeout.prototype.runLast = function(id, fn) {
-				//console.log(id);
-				//console.log(this[id]);
 				//if (this._cache[id] != null) { clearTimeout(this._cache[id])};
 				this._cache[id] = setTimeout(function() { fn() }, 100);
 			};
@@ -218,6 +223,8 @@
 				el.frontRing.style.top =  $cContainer.offset().top +  ( display.maxWheelWidthPx * 0.05) + 'px';
 
 				$('#num-disp').css("font-size", display.numDispFontSize +'px');
+				
+				
 
 			}
 						
@@ -267,7 +274,7 @@
 				display.fCog = inputs.fCog;
 				
 				updateStats(inputs);
-				
+				updateCadenceTable();
 				
 				for (var i = 0; i < 74; i++) {
 					drawUtil.drawCachedSkid(i);
@@ -304,7 +311,6 @@
 				if (Math.abs(display.bCog - inputs.bCog) < 3) var numCog = inputs.bCog;
 				else var numCog =  Math.ceil((Number(display.bCog) + Number(inputs.bCog))/2);
 				display.bCog = numCog;
-				//console.log(numCog +" , " + inputs.bCog);
 				drawUtil.drawChainRing(context.backRing,numCog, false);
 				updateSkidPatches(display.fCog, numCog);
 				drawUtil.drawSkid(context.skid, inputs.ambidextrousSkidPatches);
@@ -322,7 +328,6 @@
 				if (Math.abs(display.fCog - inputs.fCog) < 3) var numCog = inputs.fCog;
 				else var numCog =  Math.ceil((Number(display.fCog) + Number(inputs.fCog))/2);
 				display.fCog = numCog;
-				//console.log(numCog +" , " + inputs.bCog);
 				drawUtil.drawChainRing(context.frontRing,numCog);
 				updateSkidPatches(display.bCog, numCog);
 				drawUtil.drawSkid(context.skid, inputs.ambidextrousSkidPatches);
@@ -330,7 +335,16 @@
 					animateFCog();
 				}, 100);
 			}
-			
+
+			function updateCadenceTable() {
+				var kph = null;
+				for (var i=50; i<=130; i = i + 10) {
+					kph = calcKph(calcRatio(),inputs.wheelSize, i);
+					$("div#cadence-page table#cadence-table td#kph-" + i).html(kph.toFixed(2) + " KPH ");
+					$("div#cadence-page table#cadence-table td#mph-" + i).html(toMph(kph).toFixed(2) + " MPH ");
+				}
+			}
+						
 			function changeWheelSize() {
 				$.mobile.loading( 'show' );
 				updateStats(inputs);
@@ -368,6 +382,14 @@
 				$('div#cadence-page input#cadence').live('change', function(event, ui){
 					inputs.cadence = $('div#cadence-page input#cadence').val();
 					updateStats(inputs);
+				});
+				
+				$('div#cadence-page .cadenceButtons').live('click', function(event,data){
+					var size = $(this).attr("value");
+					$('#cadence-page').page();
+					$('#cadence').val(size);
+					$('#cadence').slider('refresh');
+					$.mobile.changePage( "#index-page", { transition: "flip"} );		
 				});			
 				
 				$('div#wheel-size-page .wheelSizeButtons').live('click', function(event,data){
@@ -384,6 +406,10 @@
 							inputs.wheelSize = $('#wheel-size').val();
 							changeWheelSize();
 						}
+					});
+					
+					$('div#cadence-page').live('pagebeforeshow', function(event,data) {
+						updateCadenceTable();
 					});
 				});
 				
@@ -770,6 +796,63 @@
 					<label for="cadence">Cadence</label>
 					<input type="range" name="cadence" id="cadence" value="90" min="10" max="140" />
 				</div>
+				<table id="cadence-table">
+					<tr>
+					   <th>50</th>
+					   <td id="mph-50"></td>
+					   <td id="kph-50"></td>
+					   <td><button class='cadenceButtons' type='button' value='50' data-mini='true'>Select</button></td>
+					</tr>
+					<tr>
+					   <th>60</th>
+					   <td id="mph-60"></td>
+					   <td id="kph-60"></td>
+					   <td><button class='cadenceButtons' type='button' value='60' data-mini='true'>Select</button></td>
+					</tr>
+					<tr>
+					   <th>70</th>
+					   <td id="mph-70"></td>
+					   <td id="kph-70"></td>
+					   <td><button class='cadenceButtons' type='button' value='70' data-mini='true'>Select</button></td>
+					</tr>
+					<tr>
+					   <th>80</th>
+					   <td id="mph-80"></td>
+					   <td id="kph-80"></td>
+					   <td><button class='cadenceButtons' type='button' value='80' data-mini='true'>Select</button></td>
+					</tr>
+					<tr>
+					   <th>90</th>
+					   <td id="mph-90"></td>
+					   <td id="kph-90"></td>
+					   <td><button class='cadenceButtons' type='button' value='90' data-mini='true'>Select</button></td>
+					</tr>
+					<tr>
+					   <th>100</th>
+					   <td id="mph-100"></td>
+					   <td id="kph-100"></td>
+					   <td><button class='cadenceButtons' type='button' value='100' data-mini='true'>Select</button></td>
+					</tr>
+					<tr>
+					   <th>110</th>
+					   <td id="mph-110"></td>
+					   <td id="kph-110"></td>
+					   <td><button class='cadenceButtons' type='button' value='110' data-mini='true'>Select</button></td>
+					</tr>
+					<tr>
+					   <th>120</th>
+					   <td id="mph-120"></td>
+					   <td id="kph-120"></td>
+					   <td><button class='cadenceButtons' type='button' value='120' data-mini='true'>Select</button></td>
+					</tr>
+					<tr>
+					   <th>130</th>
+					   <td id="mph-130"></td>
+					   <td id="kph-130"></td>
+					   <td><button class='cadenceButtons' type='button' value='130' data-mini='true'>Select</button></td>
+					</tr>
+				</table>
+
 			</div>
 		</div>
 		<div id="about-page" data-role="page" data-theme="a">

@@ -12,7 +12,7 @@
         		width: 100%;
         	}
 
-        	#wheel-size-table th, #wheel-size-table td {
+        	#wheel-size-table th, #wheel-size-table td, #cadence-table th, #cadence-table td {
         		vertical-align: middle; text-align: left;
         	}
         </style>
@@ -346,8 +346,8 @@
 				var kph = null;
 				for (var i=50; i<=130; i = i + 10) {
 					kph = calcKph(calcRatio(),inputs.wheelSize, i);
-					$("div#cadence-page table#cadence-table td#kph-" + i).html(kph.toFixed(2) + " KPH ");
-					$("div#cadence-page table#cadence-table td#mph-" + i).html(toMph(kph).toFixed(2) + " MPH ");
+					$("div#cadence-page table#cadence-table td#kph-" + i).html(kph.toFixed(2) + " ");
+					$("div#cadence-page table#cadence-table td#mph-" + i).html(toMph(kph).toFixed(2) + " ");
 				}
 			}
 						
@@ -757,6 +757,12 @@
 					<input type="range" name="cadence" id="cadence" value="90" min="10" max="140" />
 				</div>
 				<table id="cadence-table">
+					<tr>
+						<th>Cadence</th>
+						<th>MPH</th>
+						<th>KPH</th>
+						<th></th>
+					</tr>
 					<tr>
 					   <th>50</th>
 					   <td id="mph-50"></td>

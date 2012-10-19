@@ -201,7 +201,7 @@
 			
 				var $cContainer = $("#canvas-container");
 				$cContainer.height(display.maxWheelWidthPx);
-
+				
 				el.backRing.width = display.maxWheelWidthPx;
 				el.backRing.height = display.maxWheelWidthPx;
 				el.backRing.style.left = $cContainer.offset().left + 'px';
@@ -294,6 +294,7 @@
 			
 			//JQ on ready
 			$(function () {
+			
 			/*	if (window.cordova) {
 					document.addEventListener("deviceready", initAll, false);
 				} else {
@@ -354,11 +355,13 @@
 				drawUtil.drawSkid(context.skid, inputs.ambidextrousSkidPatches);	
 				$.mobile.loading( 'hide' );
 			}
-
 			
 			$(document).live('pageinit', function(event, ui) {
-				initAll();
-			
+				
+			});
+
+			$('div#index-page').live('pageinit', function(event, ui) {
+				
 				$('div#index-page input#f-cog').live('change', function(event, ui){
 					inputs.fCog = $('div#index-page input#f-cog').val();
 					updateStats(inputs);
@@ -374,7 +377,18 @@
 						animateBCog();
 					}, 100);
 				});
-								
+
+				
+				$('div#index-page').live('pageshow', function(event,data) {
+					initAll();
+					if (inputs.wheelSize != $('div#wheel-size-page #wheel-size').val()) {
+						inputs.wheelSize = $('div#wheel-size-page #wheel-size').val();
+						changeWheelSize();
+					}
+				});
+			});
+
+			$('div#cadence-page').live('pageinit', function(event, ui) {					
 				$('div#cadence-page input#cadence').live('change', function(event, ui){
 					inputs.cadence = $('div#cadence-page input#cadence').val();
 					updateStats(inputs);
@@ -387,7 +401,14 @@
 					$('#cadence').slider('refresh');
 					$.mobile.changePage( "#index-page", { transition: "flip"} );		
 				});			
-				
+					
+				$('div#cadence-page').live('pageshow', function(event,data) {
+					updateCadenceTable();
+				});
+			});
+			
+			
+			$('div#wheel-size-page').live('pageinit', function(event, ui) {						
 				$('div#wheel-size-page .wheelSizeButtons').live('click', function(event,data){
 					var size = $(this).attr("value");
 					$('#wheel-size-page').page();
@@ -395,19 +416,6 @@
 					$('#wheel-size').slider('refresh');
 					$.mobile.changePage( "#index-page", { transition: "flip"} );		
 				});
-				
-				$('div#index-page').live('pageshow', function(event,data) {
-					if (inputs.wheelSize != $('div#wheel-size-page #wheel-size').val()) {
-						inputs.wheelSize = $('div#wheel-size-page #wheel-size').val();
-						changeWheelSize();
-					}
-				});
-					
-				$('div#cadence-page').live('pageshow', function(event,data) {
-					updateCadenceTable();
-				});
-				
-								
 			});
 			
 			
@@ -466,7 +474,7 @@
 			<div data-role="content"	>	
 				<div data-role="fieldcontain">
 					<label for="wheel-size">Wheel Size (Millimeter)</label>
-					<input type="range" name="wheel-size" id="wheel-size" value="679" min="406" max="914" />
+					<input type="range" name="wheel-size" id="wheel-size" value="679" min="342" max="914" />
 				</div>		
 				<p>This is the diameter of wheel measured top to bottom. Below are estimates of common sizes.</p>
 				<table id="wheel-size-table">

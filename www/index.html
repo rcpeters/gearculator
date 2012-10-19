@@ -373,12 +373,7 @@
 						animateBCog();
 					}, 100);
 				});
-				
-				$('div#wheel-size-page input#wheel-size').live('change', function(event, ui){					
-					//inputs.wheelSize = $('div#wheel-size-page input#wheel-size').val();  // having issues with this one								
-					//changeWheelSize();
-				});
-				
+								
 				$('div#cadence-page input#cadence').live('change', function(event, ui){
 					inputs.cadence = $('div#cadence-page input#cadence').val();
 					updateStats(inputs);
@@ -408,7 +403,7 @@
 						}
 					});
 					
-					$('div#cadence-page').live('pagebeforeshow', function(event,data) {
+					$('div#cadence-page').live('pageshow', function(event,data) {
 						updateCadenceTable();
 					});
 				});

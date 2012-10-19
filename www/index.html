@@ -7,7 +7,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 		<link rel="stylesheet" type="text/css" href="css/index.css" />
         <link rel="stylesheet" href="css/jquery.mobile-1.2.0.min.css" />
-        <style type="text/css">
+        <style type="text/css">        	
+        	#wheel-size-table {
+        		width: 100%;
+        	}
+
         	#wheel-size-table th, #wheel-size-table td {
         		vertical-align: middle; text-align: left;
         	}
@@ -472,9 +476,11 @@
 				<label for="f-cog">Front Cog (Teeth)</label>
 				<input type="range" name="f-cog" id="f-cog" value="46" min="20" max="52" />
 				</div>
-				<div class="ui-grid-a">
-					<div class="ui-block-a"><a href="#cadence-page" id="cadence-page-button" data-role="button" data-transition="flip"><span id='cadence-page-button-txt'></span></a></div>
-					<div class="ui-block-b"><a href="#wheel-size-page" id="wheel-size-page-button" data-role="button" data-transition="flip"><span id='wheel-size-page-button-txt'></span></a></div>
+				<div id="bottom-buttons">
+					<div class="ui-grid-a">
+						<div class="ui-block-a"><a href="#cadence-page" id="cadence-page-button" data-role="button" data-transition="flip"><span id='cadence-page-button-txt'></span></a></div>
+						<div class="ui-block-b"><a href="#wheel-size-page" id="wheel-size-page-button" data-role="button" data-transition="flip"><span id='wheel-size-page-button-txt'></span></a></div>
+					</div>
 				</div>
 				<div id="cahced-canvases" style="display: none;">
 				</div>
@@ -491,7 +497,7 @@
 					<input type="range" name="wheel-size" id="wheel-size" value="679" min="406" max="914" />
 				</div>		
 				<p>This is the diameter of wheel measured top to bottom. Below are estimates of common sizes.</p>
-				<table id="wheel-size-table" style="width: 100%">
+				<table id="wheel-size-table">
 					<tr>
 					   <th>29 inch (nominal)&nbsp; </th>
 					   <td>29.00 in&nbsp; </td>

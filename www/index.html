@@ -176,7 +176,13 @@
 			var constants = {};
 			constants.maxWheelWidthMM = 914.4;
 			
-			var inputs = {};	
+			var inputs = {
+				wheelSize :  679,
+				fCog: 46,
+				bCog: 16,
+				cadence: 90
+			};	
+			
 			var display = {};
 			var el = {};
 			var jqObj = {};
@@ -276,7 +282,7 @@
 				updateStats(inputs);
 				updateCadenceTable();
 				
-				for (var i = 0; i < 74; i++) {
+				for (var i = 0; i < 38; i++) {
 					drawUtil.drawCachedSkid(i);
 				}
 				for (var i = 8; i < 54; i++) {
@@ -286,7 +292,7 @@
 				drawUtil.drawWheel(context.backWheel);
 				drawUtil.drawChainRing(context.backRing,inputs.bCog);
 				drawUtil.drawChainRing(context.frontRing, inputs.fCog);
-				drawUtil.drawSkid(context.skid, inputs.ambidextrousSkidPatches);
+				drawUtil.drawSkid(context.skid, inputs.skidPatches);
 				//hide
 				$.mobile.loading( 'hide' );
 
@@ -313,7 +319,7 @@
 				display.bCog = numCog;
 				drawUtil.drawChainRing(context.backRing,numCog, false);
 				updateSkidPatches(display.fCog, numCog);
-				drawUtil.drawSkid(context.skid, inputs.ambidextrousSkidPatches);
+				drawUtil.drawSkid(context.skid, inputs.skidPatches);
 				setTimeout(function() { 
 					animateBCog();
 				}, 50);
@@ -330,7 +336,7 @@
 				display.fCog = numCog;
 				drawUtil.drawChainRing(context.frontRing,numCog);
 				updateSkidPatches(display.bCog, numCog);
-				drawUtil.drawSkid(context.skid, inputs.ambidextrousSkidPatches);
+				drawUtil.drawSkid(context.skid, inputs.skidPatches);
 				setTimeout(function() { 
 					animateFCog();
 				}, 100);
@@ -348,11 +354,11 @@
 			function changeWheelSize() {
 				$.mobile.loading( 'show' );
 				updateStats(inputs);
-				for (var i = 0; i < 74; i++) {
+				for (var i = 0; i < 38; i++) {
 					drawUtil.drawCachedSkid(i);
 				}						
 				drawUtil.drawWheel(context.backWheel);
-				drawUtil.drawSkid(context.skid, inputs.ambidextrousSkidPatches);	
+				drawUtil.drawSkid(context.skid, inputs.skidPatches);	
 				$.mobile.loading( 'hide' );
 			}
 			

@@ -136,9 +136,12 @@
 			
 			function updateSkidPatches(fCog, bCog) {
 				var ratioGCD = gcd(fCog, bCog);
+				var bSmallistRatio = inputs.bCog / ratioGCD;
+				var fSmallistRatio = inputs.fCog / ratioGCD;
 				inputs.skidPatches = inputs.bCog / ratioGCD;
 				inputs.ambidextrousSkidPatches = inputs.skidPatches;
-				if ( fCog % 2 == 0) inputs.ambidextrousSkidPatches = inputs.skidPatches * 2;
+				//alert(fSmallistRatio % 2 != 0)
+				if ( fSmallistRatio % 2 != 0) inputs.ambidextrousSkidPatches = inputs.skidPatches * 2;
 			}
 			
 			function toMph(kph) {
@@ -155,10 +158,7 @@
 			
 			function updateStats(inputs) {
 				var ratio = calcRatio();
-				var ratioGCD = gcd(inputs.fCog, inputs.bCog);
-				inputs.skidPatches = inputs.bCog / ratioGCD;
-				inputs.ambidextrousSkidPatches = inputs.skidPatches;
-				if ( inputs.fCog % 2 == 0) inputs.ambidextrousSkidPatches = inputs.skidPatches * 2;
+				updateSkidPatches(inputs.fCog, inputs.bCog);
 				var kph = calcKph(ratio,inputs.wheelSize, inputs.cadence);
 				jqObj.ratio.html(ratio.toFixed(2));
 				jqObj.kph.html(kph.toFixed(2));
@@ -455,12 +455,12 @@
 				<div style="clear: both;"></div>
 				Skid Patches <span id="skid-patches"></span> (ambidextrous <span id="ambidextrous-skid-patches"></span>)
 				<div data-role="fieldcontain">
-				<label for="b-cog">Back Cog (Teeth)</label>
-				<input type="range" name="b-cog" id="b-cog" value="16" min="10" max="38" />
-				</div>
-				<div data-role="fieldcontain">
 				<label for="f-cog">Front Cog (Teeth)</label>
 				<input type="range" name="f-cog" id="f-cog" value="46" min="20" max="52" />
+				</div>
+				<div data-role="fieldcontain">
+				<label for="b-cog">Back Cog (Teeth)</label>
+				<input type="range" name="b-cog" id="b-cog" value="16" min="10" max="38" />
 				</div>
 				<div id="bottom-buttons">
 					<div class="ui-grid-a">

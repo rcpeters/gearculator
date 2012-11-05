@@ -19,4 +19,4 @@ License
 ---------------
 This is released under GPL3. You're free to do as you wish with this code. However any 
 modifications to the source must be shared.
-To read the [official license](https://github.com/rcpeters/gearculator/blob/master/LICENSE).
+[Official license link](https://github.com/rcpeters/gearculator/blob/master/LICENSE). 

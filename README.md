@@ -6,7 +6,7 @@ Calculates gear ratios for bicycles
 Deploy
 ---------------
 The index file is located at www/index.html. The easiest way to deploy is to copy everything in www
-to a directory on your website.
+to a subdirectory on your website.
 *  [Download](https://github.com/rcpeters/gearculator/archive/master.zip). 
 *  Unzip the download. 
 

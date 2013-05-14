@@ -44,8 +44,13 @@
 			
 			DrawUtil.prototype.drawCachedRing = function (numT) {
 					var canId = this.cachedRingId(numT);
-					
-					jqObj.cahcedCanvases.append("<canvas width='"+ display.maxWheelWidthPx + "' height='"+ display.maxWheelWidthPx+"' id='" + [canId] + "' style='position: absolute; display: none;'></canvas>");
+					if (!document.getElementById(canId)) {
+						var ob = document.createElement('canvas');
+						ob.width = display.maxWheelWidthPx;
+						ob.height = display.maxWheelWidthPx;
+						ob.id = canId;
+						el.cachedCanvases.appendChild(ob);
+					}
 					this._canvasCache[canId] = document.getElementById([canId]);
 					var newContext = this._canvasCache[canId].getContext("2d");
 					
@@ -87,7 +92,11 @@
 			DrawUtil.prototype.drawCachedSkid = function(numSkids) {
 					var canId = this.cachedSkidId(numSkids);
 					if (!document.getElementById(canId)) {
-						jqObj.cahcedCanvases.append("<canvas width='"+ display.maxWheelWidthPx + "' height='"+ display.maxWheelWidthPx+"' id='" + canId + "' style='position: absolute; display: none;'></canvas>");
+						var ob = document.createElement('canvas');
+						ob.width = display.maxWheelWidthPx;
+						ob.height = display.maxWheelWidthPx;
+						ob.id = canId;
+						el.cachedCanvases.appendChild(ob);
 					}
 					this._canvasCache[canId] = document.getElementById(canId);
 					var newContext = this._canvasCache[canId].getContext("2d");
@@ -254,7 +263,7 @@
 				el.skid = document.getElementById("skid-canvas");	
 				el.backRing = document.getElementById("back-ring-canvas");
 				el.frontRing = document.getElementById("front-ring-canvas");
-				el.cahcedCanvases  = document.getElementById("cahced-canvases");
+				el.cachedCanvases  = document.getElementById("cached-canvases");
 				
 				jqObj.wheelSize = $('#wheel-size');
 				jqObj.fCog = $('#f-cog');
@@ -265,7 +274,7 @@
 				jqObj.mph = $("#mph");
 				jqObj.skidPatches = $("#skid-patches");
 				jqObj.ambidextrousSkidPatches = $("#ambidextrous-skid-patches");
-				jqObj.cahcedCanvases= $("#cahced-canvases");
+				jqObj.cachedCanvases= $("#cached-canvases");
 				
 				context.backWheel = el.backWheel.getContext("2d");
 				context.skid = el.skid.getContext("2d");
@@ -469,7 +478,7 @@
 						<div class="ui-block-b"><a href="#wheel-size-page" id="wheel-size-page-button" data-role="button" data-transition="flip"><span id='wheel-size-page-button-txt'></span></a></div>
 					</div>
 				</div>
-				<div id="cahced-canvases" style="display: none;">
+				<div id="cached-canvases" style="display: none;">
 				</div>
 			</div>
 		</div>

@@ -127,6 +127,7 @@
 				if (typeof(this._canvasCache[canId]) == 'undefined') {
 					this.drawCachedSkid(numSkids);
 				} 
+				
 				context.clearRect(0, 0, display.maxWheelWidthPx, display.maxWheelWidthPx);
 				context.drawImage(this._canvasCache[canId], 0, 0);
 			};
@@ -258,6 +259,8 @@
 			function initAll() {
 				//show    
 				$.mobile.loading( 'show' );
+				
+				var bgColor = $('body').css('background-color');
 
 				el.backWheel = document.getElementById("back-wheel-canvas");
 				el.skid = document.getElementById("skid-canvas");	
@@ -403,7 +406,13 @@
 				});
 			});
 
-			$(document).on('pageinit', 'div#cadence-page', function(event, ui) {					
+			$(document).on('pageinit', 'div#cadence-page', function(event, ui) {	
+				
+				// hack for android 
+				// https://code.google.com/p/android/issues/detail?id=35474
+				$('#canvas-container').css('overflow', 'visible');
+				
+							
 				$('div#cadence-page input#cadence').on('change', function(event, ui){
 					inputs.cadence = $('div#cadence-page input#cadence').val();
 					updateStats(inputs);

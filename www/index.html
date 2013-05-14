@@ -16,7 +16,7 @@
         		vertical-align: middle; text-align: left;
         	}
         </style>
-        <script src="js/jquery-1.9.1.min.js"></script>
+        <script src="js/jquery-2.0.0.min.js"></script>
 		<script src="js/jquery.mobile-1.3.1.min.js"></script>
 		<script type="text/javascript" src="cordova-2.5.0.js"></script>
 		<script type="text/javascript">
@@ -68,6 +68,7 @@
 						newContext.moveTo (centerY +  radiusPx * Math.cos(i * 2 * Math.PI / numT), centerY +  radiusPx *  Math.sin(i * 2 * Math.PI / numT));
 						newContext.lineTo (centerX + teethRaiusPx * Math.cos(i * 2 * Math.PI / numT), centerY + teethRaiusPx * Math.sin(i * 2 * Math.PI / numT));
 					}
+					newContext.closePath();
 					newContext.strokeStyle = "#05F017";
 					newContext.stroke();
 				 
@@ -102,8 +103,10 @@
 						newContext.strokeStyle = "#76006d";
 						newContext.lineWidth = lineWidth;
 						newContext.arc(centerX, centerY, radius, pos/360 * 2 * Math.PI, (pos + 3)/ 360 * 2 * Math.PI , false);
-						newContext.stroke();
-					}			
+						newContext.closePath();
+					    newContext.stroke();	
+					}	
+						
 			};
 			
 			DrawUtil.prototype.cachedSkidId = function(numSkids) {
@@ -130,6 +133,7 @@
 				context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
 				context.strokeStyle = "#FA20EA";
 				context.lineWidth = 45 * display.pxPerMM;
+				context.closePath();
 				context.stroke();
 				
 			};
@@ -317,7 +321,7 @@
 				if (Math.abs(display.bCog - inputs.bCog) < 3) var numCog = inputs.bCog;
 				else var numCog =  Math.ceil((Number(display.bCog) + Number(inputs.bCog))/2);
 				display.bCog = numCog;
-				drawUtil.drawChainRing(context.backRing,numCog, false);
+				drawUtil.drawChainRing(context.backRing,numCog);
 				updateSkidPatches(display.fCog, numCog);
 				drawUtil.drawSkid(context.skid, inputs.skidPatches);
 				setTimeout(function() { 

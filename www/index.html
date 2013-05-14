@@ -45,7 +45,7 @@
 			DrawUtil.prototype.drawCachedRing = function (numT) {
 					var canId = this.cachedRingId(numT);
 					
-					jqObj.cahcedCanvases.append("<canvas width='"+ display.maxWheelWidthPx + "' height='"+ display.maxWheelWidthPx+"' id='" + [canId] + "' style='position: absolute;'></canvas>");
+					jqObj.cahcedCanvases.append("<canvas width='"+ display.maxWheelWidthPx + "' height='"+ display.maxWheelWidthPx+"' id='" + [canId] + "' style='position: absolute; display: none;'></canvas>");
 					this._canvasCache[canId] = document.getElementById([canId]);
 					var newContext = this._canvasCache[canId].getContext("2d");
 					
@@ -86,7 +86,7 @@
 			DrawUtil.prototype.drawCachedSkid = function(numSkids) {
 					var canId = this.cachedSkidId(numSkids);
 					if (!document.getElementById(canId)) {
-						jqObj.cahcedCanvases.append("<canvas width='"+ display.maxWheelWidthPx + "' height='"+ display.maxWheelWidthPx+"' id='" + canId + "' style='position: absolute;'></canvas>");
+						jqObj.cahcedCanvases.append("<canvas width='"+ display.maxWheelWidthPx + "' height='"+ display.maxWheelWidthPx+"' id='" + canId + "' style='position: absolute; display: none;'></canvas>");
 					}
 					this._canvasCache[canId] = document.getElementById(canId);
 					var newContext = this._canvasCache[canId].getContext("2d");

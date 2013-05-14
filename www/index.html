@@ -39,7 +39,7 @@
 			DrawUtil.prototype._canvasCache = {};
 			
 			DrawUtil.prototype.cachedRingId = function(numT) {
-				return "ring-canvas-" + numT;
+				return "ring-canvas-" + numT.toString();
 			}
 			
 			DrawUtil.prototype.drawCachedRing = function (numT) {
@@ -81,7 +81,7 @@
 			
 			DrawUtil.prototype.drawChainRing = function (context, numT) {
 				var canId = this.cachedRingId(numT);
-				if (this._canvasCache[canId] == undefined) {
+				if (typeof(this._canvasCache[canId]) == 'undefined') {
 					this.drawCachedRing(numT);
 				}
 				context.clearRect(0, 0, display.maxWheelWidthPx, display.maxWheelWidthPx);
@@ -124,7 +124,7 @@
 			
 			DrawUtil.prototype.drawSkid = function (context, numSkids) {
 				var canId = this.cachedSkidId(numSkids);
-				if (this._canvasCache[canId] == undefined) {
+				if (typeof(this._canvasCache[canId]) == 'undefined') {
 					this.drawCachedSkid(numSkids);
 				} 
 				context.clearRect(0, 0, display.maxWheelWidthPx, display.maxWheelWidthPx);
@@ -274,7 +274,6 @@
 				jqObj.mph = $("#mph");
 				jqObj.skidPatches = $("#skid-patches");
 				jqObj.ambidextrousSkidPatches = $("#ambidextrous-skid-patches");
-				jqObj.cachedCanvases= $("#cached-canvases");
 				
 				context.backWheel = el.backWheel.getContext("2d");
 				context.skid = el.skid.getContext("2d");
